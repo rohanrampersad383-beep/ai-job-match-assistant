@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+
+[build.environment]
+  NEXT_TELEMETRY_DISABLED = "1"
+
+[functions]
+  external_node_modules = ["@prisma/client", "prisma", "mammoth", "pdf-parse"]
+  included_files = ["node_modules/.prisma/client/**"]
+

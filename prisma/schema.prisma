@@ -1,0 +1,690 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkMode {
+  REMOTE
+  HYBRID
+  ONSITE
+}
+
+enum SeniorityLevel {
+  ENTRY
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
+  PRINCIPAL
+}
+
+enum ResumeStatus {
+  UPLOADED
+  PARSED
+  REVIEWED
+}
+
+enum ResumeSourceType {
+  UPLOAD
+  IMPORT
+}
+
+enum JobSourceType {
+  MANUAL_URL
+  MANUAL_TEXT
+  CSV_IMPORT
+  RSS_FEED
+  OFFICIAL_API
+  HTML_DISCOVERY
+}
+
+enum DiscoverySourceType {
+  RSS
+  API
+  HTML
+  CSV
+  MANUAL
+}
+
+enum SourceTriggerMode {
+  MANUAL
+  SCHEDULED
+  API
+}
+
+enum SourceRunStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  PARTIAL
+  FAILED
+}
+
+enum DiscoveryImportStatus {
+  NEW
+  IMPORTED
+  UPDATED
+  DUPLICATE
+  SKIPPED
+  FAILED
+}
+
+enum FetchLogLevel {
+  INFO
+  WARN
+  ERROR
+}
+
+enum SourceHealthStatus {
+  UNKNOWN
+  HEALTHY
+  DEGRADED
+  DISABLED
+  ERROR
+}
+
+enum LocationScope {
+  TRINIDAD_TOBAGO
+  CARIBBEAN
+  GLOBAL
+  REMOTE
+}
+
+enum MatchCategory {
+  HIGH_MATCH
+  MEDIUM_MATCH
+  STRETCH
+  LOW_MATCH
+}
+
+enum ApplyRecommendation {
+  YES
+  MAYBE
+  SKIP
+}
+
+enum ApplicationStatus {
+  NOT_STARTED
+  PREPARING
+  APPLIED
+  FOLLOW_UP
+  INTERVIEWING
+  OFFER
+  REJECTED
+  ARCHIVED
+}
+
+enum InterviewStatus {
+  NONE
+  SCREENING
+  TECHNICAL
+  PANEL
+  FINAL
+  COMPLETE
+}
+
+enum DocumentType {
+  COVER_LETTER
+  PROFESSIONAL_SUMMARY
+  RESUME_BULLET_SUGGESTIONS
+  APPLICATION_ANSWERS
+}
+
+model User {
+  id                 String              @id @default(cuid())
+  email              String              @unique
+  passwordHash       String              @map("password_hash")
+  fullName           String              @map("full_name")
+  phone              String?
+  headline           String?
+  yearsExperience    Int                 @default(0) @map("years_experience")
+  onboardingComplete Boolean             @default(false) @map("onboarding_complete")
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  preferences        UserPreference?
+  resumes            Resume[]
+  extractedData      ExtractedResumeData[]
+  sessions           Session[]
+  triggeredRuns      SourceRun[]          @relation("TriggeredRuns")
+  jobMatches         JobMatch[]
+  savedJobs          SavedJob[]
+  hiddenJobs         HiddenJob[]
+  applications       Application[]
+  generatedDocuments GeneratedDocument[]
+  scoringSettings    ScoringSetting?
+  auditLogs          AuditLog[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  tokenHash String   @unique @map("token_hash")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model UserPreference {
+  id                  String           @id @default(cuid())
+  userId              String           @unique @map("user_id")
+  desiredJobTitles    String[]         @default([]) @map("desired_job_titles")
+  preferredIndustries String[]         @default([]) @map("preferred_industries")
+  preferredLocations  String[]         @default([]) @map("preferred_locations")
+  workModes           WorkMode[]       @default([]) @map("work_modes")
+  minimumSalary       Int?             @map("minimum_salary")
+  seniorityLevels     SeniorityLevel[] @default([]) @map("seniority_levels")
+  topSkills           String[]         @default([]) @map("top_skills")
+  certifications      String[]         @default([])
+  degree              String?
+  includeKeywords     String[]         @default([]) @map("include_keywords")
+  excludeKeywords     String[]         @default([]) @map("exclude_keywords")
+  targetCompanies     String[]         @default([]) @map("target_companies")
+  avoidCompanies      String[]         @default([]) @map("avoid_companies")
+  prioritizeTrinidad  Boolean          @default(true) @map("prioritize_trinidad")
+  allowCaribbeanRemote Boolean         @default(true) @map("allow_caribbean_remote")
+  autoHideEnabled     Boolean          @default(false) @map("auto_hide_enabled")
+  autoHideRules       Json?            @map("auto_hide_rules")
+  createdAt           DateTime         @default(now()) @map("created_at")
+  updatedAt           DateTime         @updatedAt @map("updated_at")
+  user                User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+model Resume {
+  id            String             @id @default(cuid())
+  userId        String             @map("user_id")
+  fileName      String             @map("file_name")
+  mimeType      String             @map("mime_type")
+  status        ResumeStatus       @default(UPLOADED)
+  sourceType    ResumeSourceType   @default(UPLOAD) @map("source_type")
+  parserVersion String             @default("1.0.0") @map("parser_version")
+  rawText       String             @map("raw_text")
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  extractedData ExtractedResumeData?
+  documents     GeneratedDocument[]
+
+  @@index([userId])
+  @@map("resumes")
+}
+
+model ExtractedResumeData {
+  id              String   @id @default(cuid())
+  resumeId        String   @unique @map("resume_id")
+  userId          String   @map("user_id")
+  fullName        String?  @map("full_name")
+  email           String?
+  phone           String?
+  location        String?
+  summary         String?
+  yearsExperience Int      @default(0) @map("years_experience")
+  education       Json?
+  jobHistory      Json?    @map("job_history")
+  technicalSkills String[] @default([]) @map("technical_skills")
+  softSkills      String[] @default([]) @map("soft_skills")
+  toolsPlatforms  String[] @default([]) @map("tools_platforms")
+  certifications  String[] @default([])
+  projects        Json?
+  keywords        String[] @default([])
+  contactLinks    Json?    @map("contact_links")
+  reviewNotes     String?  @map("review_notes")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  resume          Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("extracted_resume_data")
+}
+
+model Job {
+  id                      String          @id @default(cuid())
+  sourceType              JobSourceType   @map("source_type")
+  sourceName              String          @map("source_name")
+  sourceReference         String?         @map("source_reference")
+  title                   String
+  company                 String
+  location                String
+  locationRaw             String?         @map("location_raw")
+  locationNormalizedId    String?         @map("location_normalized_id")
+  country                 String?
+  cityRegion              String?         @map("city_region")
+  workMode                WorkMode?       @map("work_mode")
+  isRemoteFriendly        Boolean         @default(false) @map("is_remote_friendly")
+  isTrinidadAndTobago     Boolean         @default(false) @map("is_trinidad_and_tobago")
+  isCaribbeanFriendlyRemote Boolean       @default(false) @map("is_caribbean_friendly_remote")
+  seniorityLevel          SeniorityLevel? @map("seniority_level")
+  salaryMin               Int?            @map("salary_min")
+  salaryMax               Int?            @map("salary_max")
+  salaryCurrency          String?         @default("USD") @map("salary_currency")
+  salaryRaw               String?         @map("salary_raw")
+  description             String
+  summary                 String?
+  requirements            String?
+  employmentType          String?         @map("employment_type")
+  requiredSkills          String[]        @default([]) @map("required_skills")
+  preferredSkills         String[]        @default([]) @map("preferred_skills")
+  requiredYearsExperience Int?            @map("required_years_experience")
+  educationRequirements   String?         @map("education_requirements")
+  keywords                String[]        @default([])
+  applicationUrl          String          @map("application_url")
+  postedAt                DateTime?       @map("posted_at")
+  discoveredAt            DateTime?       @map("discovered_at")
+  lastSeenAt              DateTime?       @map("last_seen_at")
+  isDiscoveredAutomatically Boolean       @default(false) @map("is_discovered_automatically")
+  needsReview             Boolean         @default(true) @map("needs_review")
+  discoveryTrustWeight    Float           @default(1) @map("discovery_trust_weight")
+  discoverySourceId       String?         @map("discovery_source_id")
+  dedupeGroupId           String?         @unique @map("dedupe_group_id")
+  rawPayload              Json?           @map("raw_payload")
+  createdAt               DateTime        @default(now()) @map("created_at")
+  updatedAt               DateTime        @updatedAt @map("updated_at")
+  discoverySource         DiscoverySource? @relation(fields: [discoverySourceId], references: [id], onDelete: SetNull)
+  locationNormalized      JobLocationNormalized? @relation(fields: [locationNormalizedId], references: [id], onDelete: SetNull)
+  dedupeGroup             DedupeGroup?    @relation("CanonicalJobGroup", fields: [dedupeGroupId], references: [id], onDelete: SetNull)
+  normalizedVariants      DiscoveredJobNormalized[] @relation("CanonicalJobVariants")
+  tags                    JobTag[]
+  matches                 JobMatch[]
+  savedBy                 SavedJob[]
+  hiddenBy                HiddenJob[]
+  applications            Application[]
+  generatedDocuments      GeneratedDocument[]
+
+  @@index([company])
+  @@index([discoverySourceId])
+  @@index([locationNormalizedId])
+  @@index([title])
+  @@index([postedAt])
+  @@map("jobs")
+}
+
+model JobMatch {
+  id           String              @id @default(cuid())
+  userId       String              @map("user_id")
+  jobId        String              @map("job_id")
+  totalScore   Float               @default(0) @map("total_score")
+  matchPercent Int                 @default(0) @map("match_percent")
+  category     MatchCategory       @default(LOW_MATCH)
+  applyWorthIt ApplyRecommendation @default(MAYBE) @map("apply_worth_it")
+  reasons      Json                @default("[]")
+  matchedSkills String[]           @default([]) @map("matched_skills")
+  missingSkills String[]           @default([]) @map("missing_skills")
+  penalties    String[]            @default([])
+  reviewedAt   DateTime?           @map("reviewed_at")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job          Job                 @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@index([matchPercent])
+  @@map("job_skill_matches")
+}
+
+model SavedJob {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  jobId     String   @map("job_id")
+  note      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@map("saved_jobs")
+}
+
+model HiddenJob {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  jobId     String   @map("job_id")
+  reason    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@map("hidden_jobs")
+}
+
+model Application {
+  id              String            @id @default(cuid())
+  userId          String            @map("user_id")
+  jobId           String            @map("job_id")
+  status          ApplicationStatus @default(NOT_STARTED)
+  interviewStatus InterviewStatus   @default(NONE) @map("interview_status")
+  appliedAt       DateTime?         @map("applied_at")
+  followUpDate    DateTime?         @map("follow_up_date")
+  notes           String?
+  companySnapshot String            @map("company_snapshot")
+  titleSnapshot   String            @map("title_snapshot")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job             Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  documents       GeneratedDocument[]
+
+  @@unique([userId, jobId])
+  @@index([status])
+  @@index([appliedAt])
+  @@map("applications")
+}
+
+model GeneratedDocument {
+  id            String       @id @default(cuid())
+  userId        String       @map("user_id")
+  jobId         String       @map("job_id")
+  applicationId String?      @map("application_id")
+  resumeId      String?      @map("resume_id")
+  type          DocumentType
+  title         String
+  content       String
+  metadata      Json?
+  createdAt     DateTime     @default(now()) @map("created_at")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job           Job          @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  application   Application? @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  resume        Resume?      @relation(fields: [resumeId], references: [id], onDelete: SetNull)
+
+  @@index([type])
+  @@map("generated_documents")
+}
+
+model ScoringSetting {
+  id                      String   @id @default(cuid())
+  userId                  String   @unique @map("user_id")
+  titleWeight             Int      @default(20) @map("title_weight")
+  skillsWeight            Int      @default(25) @map("skills_weight")
+  experienceWeight        Int      @default(15) @map("experience_weight")
+  educationWeight         Int      @default(10) @map("education_weight")
+  locationWeight          Int      @default(10) @map("location_weight")
+  remoteWeight            Int      @default(5) @map("remote_weight")
+  trinidadBoostWeight     Int      @default(10) @map("trinidad_boost_weight")
+  sourceTrustWeight       Int      @default(5) @map("source_trust_weight")
+  salaryWeight            Int      @default(5) @map("salary_weight")
+  certificationsWeight    Int      @default(5) @map("certifications_weight")
+  keywordWeight           Int      @default(5) @map("keyword_weight")
+  blacklistPenalty        Int      @default(15) @map("blacklist_penalty")
+  mismatchPenalty         Int      @default(10) @map("mismatch_penalty")
+  targetJobFamilies       String[] @default([]) @map("target_job_families")
+  includeKeywords         String[] @default([]) @map("include_keywords")
+  excludeKeywords         String[] @default([]) @map("exclude_keywords")
+  autoHideMinMatchPercent Int      @default(25) @map("auto_hide_min_match_percent")
+  autoHideRules           Json?    @map("auto_hide_rules")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("scoring_settings")
+}
+
+model DiscoverySource {
+  id                     String              @id @default(cuid())
+  name                   String
+  slug                   String              @unique
+  sourceType             DiscoverySourceType @map("source_type")
+  baseUrl                String              @map("base_url")
+  publicUrl              String?             @map("public_url")
+  enabled                Boolean             @default(true)
+  fetchStrategy          String              @map("fetch_strategy")
+  parserKey              String              @map("parser_key")
+  legalNotes             String              @map("legal_notes")
+  defaultTags            String[]            @default([]) @map("default_tags")
+  regionTags             String[]            @default([]) @map("region_tags")
+  pollingIntervalMinutes Int                 @default(360) @map("polling_interval_minutes")
+  dedupeStrategy         String              @default("canonical_url_or_company_title_location") @map("dedupe_strategy")
+  errorHandlingRules     Json?               @map("error_handling_rules")
+  config                 Json?
+  lastRunAt              DateTime?           @map("last_run_at")
+  lastSuccessAt          DateTime?           @map("last_success_at")
+  lastStatus             SourceRunStatus?    @map("last_status")
+  healthStatus           SourceHealthStatus  @default(UNKNOWN) @map("health_status")
+  lastMessage            String?             @map("last_message")
+  createdAt              DateTime            @default(now()) @map("created_at")
+  updatedAt              DateTime            @updatedAt @map("updated_at")
+  settings               SourceSetting[]
+  runs                   SourceRun[]
+  rawJobs                DiscoveredJobRaw[]
+  normalizedJobs         DiscoveredJobNormalized[]
+  logs                   FetchLog[]
+  errors                 SourceError[]
+  jobs                   Job[]
+  tags                   JobTag[]
+
+  @@map("sources")
+}
+
+model SourceSetting {
+  id          String          @id @default(cuid())
+  sourceId    String          @map("source_id")
+  key         String
+  value       Json
+  description String?
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  source      DiscoverySource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, key])
+  @@map("source_settings")
+}
+
+model SourceRun {
+  id                String            @id @default(cuid())
+  sourceId          String            @map("source_id")
+  batchKey          String?           @map("batch_key")
+  triggerMode       SourceTriggerMode @default(MANUAL) @map("trigger_mode")
+  triggeredByUserId String?           @map("triggered_by_user_id")
+  status            SourceRunStatus   @default(PENDING)
+  startedAt         DateTime          @default(now()) @map("started_at")
+  finishedAt        DateTime?         @map("finished_at")
+  jobsFound         Int               @default(0) @map("jobs_found")
+  jobsImported      Int               @default(0) @map("jobs_imported")
+  duplicatesSkipped Int               @default(0) @map("duplicates_skipped")
+  parsingFailures   Int               @default(0) @map("parsing_failures")
+  runtimeErrors     Int               @default(0) @map("runtime_errors")
+  summary           Json?
+  source            DiscoverySource   @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  triggeredBy       User?             @relation("TriggeredRuns", fields: [triggeredByUserId], references: [id], onDelete: SetNull)
+  rawJobs           DiscoveredJobRaw[]
+  normalizedJobs    DiscoveredJobNormalized[]
+  logs              FetchLog[]
+  errors            SourceError[]
+
+  @@index([sourceId, startedAt])
+  @@index([batchKey])
+  @@map("source_runs")
+}
+
+model DiscoveredJobRaw {
+  id          String                @id @default(cuid())
+  sourceId    String                @map("source_id")
+  sourceRunId String                @map("source_run_id")
+  externalId  String?               @map("external_id")
+  sourceUrl   String                @map("source_url")
+  sourceType  DiscoverySourceType   @map("source_type")
+  payload     Json
+  rawText     String?               @map("raw_text")
+  fingerprint String
+  fetchedAt   DateTime              @default(now()) @map("fetched_at")
+  parseStatus DiscoveryImportStatus @default(NEW) @map("parse_status")
+  parseError  String?               @map("parse_error")
+  source      DiscoverySource       @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  sourceRun   SourceRun             @relation(fields: [sourceRunId], references: [id], onDelete: Cascade)
+  normalizedJobs DiscoveredJobNormalized[]
+  errors      SourceError[]
+
+  @@index([sourceId, fetchedAt])
+  @@index([sourceRunId])
+  @@index([fingerprint])
+  @@map("discovered_job_raw")
+}
+
+model DiscoveredJobNormalized {
+  id                   String                @id @default(cuid())
+  sourceId             String                @map("source_id")
+  sourceRunId          String                @map("source_run_id")
+  rawJobId             String                @map("raw_job_id")
+  dedupeGroupId        String?               @map("dedupe_group_id")
+  canonicalJobId       String?               @map("canonical_job_id")
+  locationNormalizedId String?               @map("location_normalized_id")
+  sourceType           DiscoverySourceType   @map("source_type")
+  sourceName           String                @map("source_name")
+  sourceUrl            String                @map("source_url")
+  applicationUrl       String?               @map("application_url")
+  externalId           String?               @map("external_id")
+  title                String
+  company              String
+  locationRaw          String                @map("location_raw")
+  locationText         String                @map("location_text")
+  country              String?
+  cityRegion           String?               @map("city_region")
+  remoteStatus         WorkMode?             @map("remote_status")
+  isRemoteFriendly     Boolean               @default(false) @map("is_remote_friendly")
+  isTrinidadAndTobago  Boolean               @default(false) @map("is_trinidad_and_tobago")
+  isCaribbeanFriendly  Boolean               @default(false) @map("is_caribbean_friendly")
+  salaryRaw            String?               @map("salary_raw")
+  salaryMin            Int?                  @map("salary_min")
+  salaryMax            Int?                  @map("salary_max")
+  currency             String?
+  description          String
+  requirements         String?
+  employmentType       String?               @map("employment_type")
+  experienceLevel      SeniorityLevel?       @map("experience_level")
+  postedAt             DateTime?             @map("posted_at")
+  discoveredAt         DateTime              @default(now()) @map("discovered_at")
+  importStatus         DiscoveryImportStatus @default(NEW) @map("import_status")
+  dedupeKey            String                @map("dedupe_key")
+  normalizedHash       String                @map("normalized_hash")
+  similarityScore      Float?                @map("similarity_score")
+  createdAt            DateTime              @default(now()) @map("created_at")
+  updatedAt            DateTime              @updatedAt @map("updated_at")
+  source               DiscoverySource       @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  sourceRun            SourceRun             @relation(fields: [sourceRunId], references: [id], onDelete: Cascade)
+  rawJob               DiscoveredJobRaw      @relation(fields: [rawJobId], references: [id], onDelete: Cascade)
+  dedupeGroup          DedupeGroup?          @relation("DedupeGroupJobs", fields: [dedupeGroupId], references: [id], onDelete: SetNull)
+  canonicalJob         Job?                  @relation("CanonicalJobVariants", fields: [canonicalJobId], references: [id], onDelete: SetNull)
+  locationNormalized   JobLocationNormalized? @relation(fields: [locationNormalizedId], references: [id], onDelete: SetNull)
+  tags                 JobTag[]
+  logs                 FetchLog[]
+  canonicalForGroup    DedupeGroup?          @relation("CanonicalNormalizedJob")
+
+  @@unique([sourceId, sourceUrl])
+  @@index([dedupeKey])
+  @@index([canonicalJobId])
+  @@index([locationNormalizedId])
+  @@map("discovered_job_normalized")
+}
+
+model DedupeGroup {
+  id                      String                  @id @default(cuid())
+  groupKey                String                  @unique @map("group_key")
+  canonicalNormalizedJobId String?                @unique @map("canonical_normalized_job_id")
+  reason                  String?
+  confidence              Float                   @default(1)
+  createdAt               DateTime                @default(now()) @map("created_at")
+  updatedAt               DateTime                @updatedAt @map("updated_at")
+  canonicalNormalizedJob  DiscoveredJobNormalized? @relation("CanonicalNormalizedJob", fields: [canonicalNormalizedJobId], references: [id], onDelete: SetNull)
+  canonicalJob            Job?                    @relation("CanonicalJobGroup")
+  discoveredJobs          DiscoveredJobNormalized[] @relation("DedupeGroupJobs")
+
+  @@map("dedupe_groups")
+}
+
+model JobLocationNormalized {
+  id                  String                  @id @default(cuid())
+  slug                String                  @unique
+  rawValue            String                  @map("raw_value")
+  normalizedValue     String                  @map("normalized_value")
+  country             String?
+  region              String?
+  city                String?
+  scope               LocationScope           @default(GLOBAL)
+  isRemoteFriendly    Boolean                 @default(false) @map("is_remote_friendly")
+  isTrinidadAndTobago Boolean                 @default(false) @map("is_trinidad_and_tobago")
+  isCaribbean         Boolean                 @default(false) @map("is_caribbean")
+  aliases             String[]                @default([])
+  createdAt           DateTime                @default(now()) @map("created_at")
+  updatedAt           DateTime                @updatedAt @map("updated_at")
+  normalizedJobs      DiscoveredJobNormalized[]
+  jobs                Job[]
+
+  @@map("job_locations_normalized")
+}
+
+model JobTag {
+  id              String                   @id @default(cuid())
+  discoveredJobId String?                  @map("discovered_job_id")
+  jobId           String?                  @map("job_id")
+  sourceId        String?                  @map("source_id")
+  label           String
+  category        String                   @default("general")
+  createdAt       DateTime                 @default(now()) @map("created_at")
+  discoveredJob   DiscoveredJobNormalized? @relation(fields: [discoveredJobId], references: [id], onDelete: Cascade)
+  job             Job?                     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  source          DiscoverySource?         @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([label, category])
+  @@map("job_tags")
+}
+
+model FetchLog {
+  id              String                   @id @default(cuid())
+  sourceId        String                   @map("source_id")
+  sourceRunId     String?                  @map("source_run_id")
+  discoveredJobId String?                  @map("discovered_job_id")
+  level           FetchLogLevel
+  message         String
+  context         Json?
+  createdAt       DateTime                 @default(now()) @map("created_at")
+  source          DiscoverySource          @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  sourceRun       SourceRun?               @relation(fields: [sourceRunId], references: [id], onDelete: SetNull)
+  discoveredJob   DiscoveredJobNormalized? @relation(fields: [discoveredJobId], references: [id], onDelete: SetNull)
+
+  @@index([sourceId, createdAt])
+  @@index([sourceRunId])
+  @@map("fetch_logs")
+}
+
+model SourceError {
+  id          String          @id @default(cuid())
+  sourceId    String          @map("source_id")
+  sourceRunId String?         @map("source_run_id")
+  rawJobId    String?         @map("raw_job_id")
+  code        String?
+  message     String
+  details     Json?
+  createdAt   DateTime        @default(now()) @map("created_at")
+  source      DiscoverySource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  sourceRun   SourceRun?      @relation(fields: [sourceRunId], references: [id], onDelete: SetNull)
+  rawJob      DiscoveredJobRaw? @relation(fields: [rawJobId], references: [id], onDelete: SetNull)
+
+  @@index([sourceId, createdAt])
+  @@index([sourceRunId])
+  @@map("source_errors")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?  @map("user_id")
+  entityType String   @map("entity_type")
+  entityId   String?  @map("entity_id")
+  action     String
+  details    Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
