@@ -1,6 +1,13 @@
-# Job Match Assistant
+# AI Job Match Assistant
 
-Job Match Assistant is a full-stack Next.js application for legal, semi-automated job discovery and application preparation. The current MVP is discovery-first: it automatically pulls jobs from approved public sources, normalizes and deduplicates them, scores them against the user profile, and surfaces them in a review queue and dashboard. Manual import remains available as a fallback, not the main workflow.
+An AI-powered job discovery and matching system that automatically finds, processes, and ranks job opportunities based on user preferences.
+
+## 🚀 Key Highlights
+
+- Automated job discovery from multiple sources (RSS, APIs, HTML)
+- Intelligent job matching and scoring system
+- Resume parsing and profile-based recommendations
+- Built with Next.js, Prisma, and PostgreSQL (Neon)
 
 ## Core Capabilities
 
