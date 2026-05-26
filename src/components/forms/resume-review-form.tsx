@@ -22,16 +22,16 @@ export function ResumeReviewForm({ action, resumeId, defaults }: ResumeReviewFor
   return (
     <form action={formAction} className="grid gap-6">
       <input name="resumeId" type="hidden" value={resumeId} />
-      <Card className="bg-white/82">
+      <Card className="bg-[var(--surface)]">
         <CardTitle>Review extracted resume data</CardTitle>
         <CardDescription className="mt-2">
           Correct the parser output before relying on it for scoring or application drafts. Focus first on identity,
           contact data, and the details most likely to affect match quality.
         </CardDescription>
         <div className="mt-6 grid gap-5">
-          <section className="rounded-[1.5rem] border border-white/70 bg-white/72 p-5 shadow-[var(--shadow-soft)]">
+          <section className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow-soft)]">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+              <h3 className="text-sm font-semibold uppercase text-[var(--muted)]">
                 Identity and contact
               </h3>
               <p className="mt-2 text-sm leading-6 text-[var(--secondary)]">
@@ -72,9 +72,9 @@ export function ResumeReviewForm({ action, resumeId, defaults }: ResumeReviewFor
             </div>
           </section>
 
-          <section className="rounded-[1.5rem] border border-white/70 bg-white/72 p-5 shadow-[var(--shadow-soft)]">
+          <section className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow-soft)]">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+              <h3 className="text-sm font-semibold uppercase text-[var(--muted)]">
                 Skills and credentials
               </h3>
               <p className="mt-2 text-sm leading-6 text-[var(--secondary)]">
@@ -106,9 +106,9 @@ export function ResumeReviewForm({ action, resumeId, defaults }: ResumeReviewFor
             </div>
           </section>
 
-          <section className="rounded-[1.5rem] border border-white/70 bg-white/72 p-5 shadow-[var(--shadow-soft)]">
+          <section className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow-soft)]">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+              <h3 className="text-sm font-semibold uppercase text-[var(--muted)]">
                 Background details
               </h3>
               <p className="mt-2 text-sm leading-6 text-[var(--secondary)]">

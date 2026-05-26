@@ -1,5 +1,5 @@
 {
-  "name": "job-match-assistant",
+  "name": "matchiq",
   "version": "0.1.0",
   "private": true,
   "prisma": {

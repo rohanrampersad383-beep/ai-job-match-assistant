@@ -1,0 +1,17 @@
+{
+  "name": "MatchIQ",
+  "short_name": "MatchIQ",
+  "description": "AI-powered career intelligence for ranking opportunities, understanding fit, and preparing career moves.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070A11",
+  "theme_color": "#2F6BFF",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

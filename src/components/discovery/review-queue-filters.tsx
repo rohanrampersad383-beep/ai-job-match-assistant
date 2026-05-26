@@ -22,7 +22,7 @@ export function ReviewQueueFilters({
   }>;
 }) {
   return (
-    <Card className="bg-white/78">
+    <Card className="bg-[var(--surface)]">
       <form className="grid gap-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -62,7 +62,7 @@ export function ReviewQueueFilters({
         </div>
 
         <div className="grid gap-3 md:grid-cols-2">
-          <label className="flex items-start gap-3 rounded-[1.25rem] border border-[var(--border)] bg-white/85 px-4 py-3 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-white/95">
+          <label className="flex items-start gap-3 rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]">
             <input
               className="mt-1 size-4 accent-[var(--primary)]"
               defaultChecked={defaults.trinidadOnly ?? true}
@@ -76,7 +76,7 @@ export function ReviewQueueFilters({
               </span>
             </span>
           </label>
-          <label className="flex items-start gap-3 rounded-[1.25rem] border border-[var(--border)] bg-white/85 px-4 py-3 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-white/95">
+          <label className="flex items-start gap-3 rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]">
             <input
               className="mt-1 size-4 accent-[var(--primary)]"
               defaultChecked={Boolean(defaults.remoteOnly)}

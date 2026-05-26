@@ -7,7 +7,7 @@ export function Card({ children, className }: PropsWithChildren<{ className?: st
 }
 
 export function CardTitle({ children, className }: PropsWithChildren<{ className?: string }>) {
-  return <h2 className={cn("text-xl font-semibold tracking-[-0.02em] text-[var(--foreground-strong)]", className)}>{children}</h2>;
+  return <h2 className={cn("font-display text-xl font-semibold text-[var(--foreground-strong)]", className)}>{children}</h2>;
 }
 
 export function CardDescription({ children, className }: PropsWithChildren<{ className?: string }>) {

@@ -22,7 +22,7 @@ export default async function JobImportPage({
       {error ? <p className="text-sm text-[var(--danger)]">Import failed. Check the submitted data and try again.</p> : null}
 
       <div className="grid gap-6 xl:grid-cols-3">
-        <Card className="bg-white/82">
+        <Card className="bg-[var(--surface)]">
           <CardTitle>Manual job or pasted description</CardTitle>
           <CardDescription className="mt-2">
             Best when you want to add a single role from an approved source without any scraping.
@@ -43,7 +43,7 @@ export default async function JobImportPage({
           </form>
         </Card>
 
-        <Card className="bg-white/82">
+        <Card className="bg-[var(--surface)]">
           <CardTitle>CSV import</CardTitle>
           <CardDescription className="mt-2">
             Upload or paste a CSV with columns such as title, company, location, description,
@@ -59,7 +59,7 @@ export default async function JobImportPage({
           </form>
         </Card>
 
-        <Card className="bg-white/82">
+        <Card className="bg-[var(--surface)]">
           <CardTitle>RSS feed import</CardTitle>
           <CardDescription className="mt-2">
             Bring in roles from approved job feeds. This is intentionally limited to feed data the source already exposes.

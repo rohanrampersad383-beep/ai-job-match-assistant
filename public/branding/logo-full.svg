@@ -1,0 +1,25 @@
+<svg width="360" height="96" viewBox="0 0 360 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="matchiq-full-title">
+  <title id="matchiq-full-title">MatchIQ</title>
+  <defs>
+    <linearGradient id="matchiq-full-gradient" x1="10" y1="18" x2="78" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE"/>
+      <stop offset="0.48" stop-color="#2F6BFF"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="matchiq-full-text" x1="172" y1="24" x2="326" y2="76" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="0.58" stop-color="#F8FAFC"/>
+      <stop offset="0.59" stop-color="#2F6BFF"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <rect x="8" y="8" width="80" height="80" rx="22" fill="#0B1018"/>
+    <rect x="8.5" y="8.5" width="79" height="79" rx="21.5" stroke="white" stroke-opacity="0.08"/>
+    <path d="M21 28.5C21 26.9 22.82 25.97 24.12 26.91L48 44.21L71.88 26.91C73.18 25.97 75 26.9 75 28.5V43.43C75 44.05 74.71 44.64 74.21 45.01L52.62 61.08C49.88 63.12 46.12 63.12 43.38 61.08L21.79 45.01C21.29 44.64 21 44.05 21 43.43V28.5Z" fill="url(#matchiq-full-gradient)"/>
+    <path d="M21 51.4C21 49.74 22.91 48.82 24.2 49.86L35.2 58.73C35.71 59.14 36 59.75 36 60.4V72C36 73.1 35.1 74 34 74H23C21.9 74 21 73.1 21 72V51.4Z" fill="url(#matchiq-full-gradient)"/>
+    <path d="M60 60.45C60 59.77 60.32 59.13 60.86 58.72L71.82 50.03C73.13 48.99 75.06 49.92 75.06 51.6V72C75.06 73.1 74.17 74 73.06 74H62C60.9 74 60 73.1 60 72V60.45Z" fill="#38BDF8"/>
+    <path d="M42 55.2L48 59.7L54 55.2V73C54 74.1 53.1 75 52 75H44C42.9 75 42 74.1 42 73V55.2Z" fill="#2F6BFF"/>
+  </g>
+  <text x="108" y="62" fill="url(#matchiq-full-text)" font-family="Inter, Geist, Arial, sans-serif" font-size="44" font-weight="650" letter-spacing="0">MatchIQ</text>
+</svg>

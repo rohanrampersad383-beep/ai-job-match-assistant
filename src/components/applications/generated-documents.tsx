@@ -26,7 +26,7 @@ export function GeneratedDocuments({
   return (
     <div className="grid gap-4">
       {ordered.map((document) => (
-        <Card key={document.id} className="bg-white/80">
+        <Card key={document.id} className="bg-[var(--surface)]">
           <CardTitle>{document.title}</CardTitle>
           <CardDescription className="mt-2">
             Editable draft based only on your existing profile and resume data.

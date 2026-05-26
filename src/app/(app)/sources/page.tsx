@@ -49,19 +49,19 @@ export default async function SourcesPage() {
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <SourceForm action={saveDiscoverySourceAction} />
 
-        <Card className="bg-white/82">
+        <Card className="bg-[var(--surface)]">
           <CardTitle>Safe discovery policy</CardTitle>
           <CardDescription className="mt-2">
             This platform is designed for legal job discovery only. LinkedIn automation, auto-apply behavior, and risky scraping are intentionally excluded.
           </CardDescription>
           <div className="mt-6 grid gap-4 text-sm text-[var(--secondary)]">
-            <div className="rounded-2xl bg-white/75 px-4 py-4">
+            <div className="rounded-2xl bg-[var(--surface-muted)] px-4 py-4">
               Prefer RSS feeds, public APIs, and official company careers pages that are publicly accessible.
             </div>
-            <div className="rounded-2xl bg-white/75 px-4 py-4">
+            <div className="rounded-2xl bg-[var(--surface-muted)] px-4 py-4">
               Keep source-specific legal notes and parser constraints documented so risky sources can be disabled quickly.
             </div>
-            <div className="rounded-2xl bg-white/75 px-4 py-4">
+            <div className="rounded-2xl bg-[var(--surface-muted)] px-4 py-4">
               Every discovered job keeps the original source name and URL. Final submission always stays manual.
             </div>
           </div>
@@ -73,7 +73,7 @@ export default async function SourcesPage() {
           const lastRun = source.runs[0];
 
           return (
-            <Card key={source.id} className="bg-white/82">
+            <Card key={source.id} className="bg-[var(--surface)]">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
@@ -95,19 +95,19 @@ export default async function SourcesPage() {
 
               <div className="mt-6 grid gap-4 md:grid-cols-4">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Last run</p>
+                  <p className="text-xs uppercase text-[var(--muted)]">Last run</p>
                   <p className="mt-1 text-sm text-[var(--secondary)]">{formatDate(source.lastRunAt)}</p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Last success</p>
+                  <p className="text-xs uppercase text-[var(--muted)]">Last success</p>
                   <p className="mt-1 text-sm text-[var(--secondary)]">{formatDate(source.lastSuccessAt)}</p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Normalized jobs</p>
+                  <p className="text-xs uppercase text-[var(--muted)]">Normalized jobs</p>
                   <p className="mt-1 text-sm text-[var(--secondary)]">{source._count.normalizedJobs}</p>
                 </div>
                 <div>
-                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Recorded errors</p>
+                  <p className="text-xs uppercase text-[var(--muted)]">Recorded errors</p>
                   <p className="mt-1 text-sm text-[var(--secondary)]">{source._count.errors}</p>
                 </div>
               </div>
@@ -126,7 +126,7 @@ export default async function SourcesPage() {
               </div>
 
               {lastRun ? (
-                <div className="mt-6 rounded-[1.25rem] bg-white/75 px-4 py-4 text-sm text-[var(--secondary)]">
+                <div className="mt-6 rounded-[1.25rem] bg-[var(--surface-muted)] px-4 py-4 text-sm text-[var(--secondary)]">
                   Last run summary: found {lastRun.jobsFound}, imported {lastRun.jobsImported}, duplicates{" "}
                   {lastRun.duplicatesSkipped}, parsing failures {lastRun.parsingFailures}, runtime errors{" "}
                   {lastRun.runtimeErrors}.
@@ -136,7 +136,7 @@ export default async function SourcesPage() {
               {source.logs.length ? (
                 <div className="mt-4 grid gap-2">
                   {source.logs.map((log) => (
-                    <div key={log.id} className="rounded-2xl bg-white/75 px-4 py-3 text-sm text-[var(--secondary)]">
+                    <div key={log.id} className="rounded-2xl bg-[var(--surface-muted)] px-4 py-3 text-sm text-[var(--secondary)]">
                       {log.message}
                     </div>
                   ))}
@@ -169,7 +169,7 @@ export default async function SourcesPage() {
                   </SubmitButton>
                 </form>
                 <a
-                  className="inline-flex cursor-pointer items-center gap-2 rounded-2xl border border-[var(--border)] bg-white/80 px-4 py-2 text-sm font-semibold text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
+                  className="inline-flex cursor-pointer items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
                   href={source.publicUrl ?? source.baseUrl}
                   rel="noreferrer"
                   target="_blank"
@@ -179,7 +179,7 @@ export default async function SourcesPage() {
                 </a>
               </div>
 
-              <details className="mt-6 rounded-[1.25rem] bg-white/70 p-4">
+              <details className="mt-6 rounded-[1.25rem] bg-[var(--surface-muted)] p-4">
                 <summary className="cursor-pointer text-sm font-semibold text-[var(--secondary)]">
                   Edit configuration
                 </summary>

@@ -8,7 +8,7 @@ export function EmptyState({
   children
 }: PropsWithChildren<{ title: string; description: string }>) {
   return (
-    <Card className="border border-dashed border-[var(--border-strong)] bg-white/65 py-10 text-center">
+    <Card className="border border-dashed border-[var(--border-strong)] bg-[var(--surface)] py-10 text-center">
       <div className="mx-auto max-w-xl">
         <CardTitle className="mb-2 text-2xl">{title}</CardTitle>
         <CardDescription className="text-[15px]">{description}</CardDescription>

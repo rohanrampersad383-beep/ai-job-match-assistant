@@ -28,7 +28,7 @@ async function syncDiscoveredTags(discoveredJobId: string, sourceId: string, tag
 }
 
 async function main() {
-  const email = process.env.DEMO_USER_EMAIL ?? "demo@jobmatchassistant.dev";
+  const email = process.env.DEMO_USER_EMAIL ?? "demo@matchiq.dev";
   const password = process.env.DEMO_USER_PASSWORD ?? "ChangeMe123!";
   const passwordHash = await bcrypt.hash(password, 10);
 

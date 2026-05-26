@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { PropsWithChildren } from "react";
 
+import { MatchIQLogo } from "@/components/branding/matchiq-logo";
 import { Button } from "@/components/ui/button";
 import { signOutAction } from "@/lib/actions/auth";
 import { cn } from "@/lib/utils";
@@ -38,14 +39,12 @@ export function AppShell({
   return (
     <div className="container-shell py-4 lg:py-6">
       <div className="grid gap-6 xl:grid-cols-[310px_minmax(0,1fr)] 2xl:gap-7">
-        <aside className="glass-panel sticky top-4 self-start overflow-hidden rounded-[2rem] border border-white/55 p-5 shadow-[var(--shadow-strong)]">
-          <div className="rounded-[1.6rem] bg-[linear-gradient(160deg,#12384d_0%,#175978_58%,#148a7a_100%)] px-5 py-6 text-white shadow-[var(--shadow-strong)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-white/72">
-              Job Match Assistant
-            </p>
-            <p className="mt-4 text-xl font-semibold tracking-[-0.02em]">{userName}</p>
-            <p className="mt-2 text-sm leading-6 text-white/80">
-              Discovery-first workflow. Manual apply only. Legal sourcing only.
+        <aside className="glass-panel sticky top-4 self-start overflow-hidden rounded-[var(--radius-panel)] p-5 shadow-[var(--shadow-strong)]">
+          <div className="rounded-[1.25rem] border border-white/10 bg-[image:var(--gradient-brand-soft)] px-5 py-6 text-white shadow-[var(--shadow-glow)]">
+            <MatchIQLogo />
+            <p className="mt-5 text-xl font-semibold">{userName}</p>
+            <p className="mt-2 text-sm leading-6 text-white/72">
+              Career intelligence workspace for ranked opportunities, fit signals, and human-controlled applications.
             </p>
           </div>
 
@@ -59,10 +58,10 @@ export function AppShell({
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "group flex items-center gap-3 rounded-[1rem] border px-4 py-3.5 text-sm font-medium transition",
+                    "group flex items-center gap-3 rounded-[var(--radius-lg)] border px-4 py-3.5 text-sm font-medium transition",
                     active
-                      ? "border-transparent bg-[linear-gradient(135deg,#12384d_0%,#175978_100%)] text-white shadow-[var(--shadow-soft)]"
-                      : "border-transparent text-[var(--secondary)] hover:border-white/60 hover:bg-white/92 hover:text-[var(--foreground-strong)]"
+                      ? "border-[var(--border-glow)] bg-[image:var(--gradient-active)] text-white shadow-[var(--shadow-glow)]"
+                      : "border-transparent text-[var(--secondary)] hover:border-[var(--border)] hover:bg-[var(--surface-muted)] hover:text-[var(--foreground-strong)]"
                   )}
                 >
                   <span
@@ -70,20 +69,20 @@ export function AppShell({
                       "inline-flex size-9 items-center justify-center rounded-xl transition",
                       active
                         ? "bg-white/14 text-white"
-                        : "bg-[var(--muted-surface)] text-[var(--secondary)] group-hover:bg-[var(--secondary)]/10"
+                        : "bg-[var(--surface-muted)] text-[var(--secondary)] group-hover:bg-[var(--primary)]/10 group-hover:text-white"
                     )}
                   >
                     <Icon className="size-4" />
                   </span>
                   <span className="flex-1">{item.label}</span>
-                  {active ? <span className="size-2 rounded-full bg-white/80" /> : null}
+                  {active ? <span className="size-2 rounded-full bg-[var(--surface)]" /> : null}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="mt-6 rounded-[1.35rem] border border-[rgba(20,138,122,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.95)_0%,rgba(239,248,246,0.88)_100%)] px-4 py-4 text-sm leading-6 text-[var(--muted-strong)]">
-            Tip: use the review queue after discovery runs to triage new Trinidad and Tobago and remote-friendly roles quickly.
+          <div className="mt-6 rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-4 text-sm leading-6 text-[var(--muted-strong)]">
+            Tip: use the review queue after discovery runs to triage high-signal opportunities quickly.
           </div>
 
           <form action={signOutAction} className="mt-6">

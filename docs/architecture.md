@@ -2,7 +2,7 @@
 
 ## Overview
 
-Job Match Assistant is organized as a Next.js App Router application with server-rendered data views, focused client components for forms and interaction, and Prisma-backed persistence in PostgreSQL.
+MatchIQ is organized as a Next.js App Router application with server-rendered data views, focused client components for forms and interaction, and Prisma-backed persistence in PostgreSQL.
 
 The current architecture keeps the existing `jobs` table as the canonical user-facing job record while introducing a discovery layer around it:
 

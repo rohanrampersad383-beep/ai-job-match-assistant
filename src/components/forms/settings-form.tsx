@@ -38,7 +38,7 @@ export function SettingsForm({
 
   return (
     <form action={formAction} className="grid gap-6">
-      <Card className="bg-white/82">
+      <Card className="bg-[var(--surface)]">
         <CardTitle>Scoring weights</CardTitle>
         <CardDescription className="mt-2">
           Control how much each criterion contributes to the overall fit percentage.
@@ -64,7 +64,7 @@ export function SettingsForm({
         </div>
       </Card>
 
-      <Card className="bg-white/82">
+      <Card className="bg-[var(--surface)]">
         <CardTitle>Keyword and family rules</CardTitle>
         <CardDescription className="mt-2">
           Use these controls to steer the discovery engine toward your target job families without losing transparency.

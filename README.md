@@ -1,25 +1,34 @@
-# AI Job Match Assistant
+# MatchIQ
 
-An AI-powered job discovery and matching system that automatically finds, processes, and ranks job opportunities based on user preferences.
+MatchIQ is a premium AI-powered career intelligence platform for discovering opportunities, ranking fit, understanding career signals, and preparing application materials while keeping final submissions human-controlled.
 
-## 🚀 Key Highlights
+## Key Highlights
 
-- Automated job discovery from multiple sources (RSS, APIs, HTML)
-- Intelligent job matching and scoring system
-- Resume parsing and profile-based recommendations
-- Built with Next.js, Prisma, and PostgreSQL (Neon)
+- Career intelligence workspace for ranked opportunity review
+- Automated discovery from legal public sources such as RSS, public APIs, and approved public HTML pages
+- Match scoring with human-readable fit explanations
+- Resume parsing and profile-grounded recommendations
+- Scalable MatchIQ brand, design token, typography, UI primitive, and motion foundations
+- Built with Next.js, Prisma, PostgreSQL, and Tailwind CSS v4
 
 ## Core Capabilities
 
 - Secure credentials-based auth and onboarding
 - Resume upload and structured resume parsing for PDF and DOCX files
-- Discovery registry for legal public sources such as RSS, public APIs, and approved public HTML job pages
+- Discovery registry for legal public sources
 - Trinidad and Tobago-focused location normalization and Caribbean-friendly remote detection
 - Source runs, fetch logs, dedupe groups, and discovery observability
-- Match scoring with human-readable explanations and configurable weights
 - Dashboard, review queue, source management, and discovery run history
 - Editable application-prep drafts using only user-provided data
 - Manual application tracking with official external links only
+
+## Brand And Design Foundation
+
+- Brand assets live in `src/assets/branding` with public runtime copies in `public/branding`.
+- Shared brand metadata lives in `src/lib/brand.ts`.
+- Design tokens and motion constants live in `src/lib/design`.
+- Reusable UI primitives live in `src/components/ui`.
+- The visual research system lives in `inspirations`.
 
 ## Legal and Product Constraints
 
@@ -50,7 +59,7 @@ An AI-powered job discovery and matching system that automatically finds, proces
 
 Demo credentials after seeding:
 
-- Email: `demo@jobmatchassistant.dev`
+- Email: `demo@matchiq.dev`
 - Password: `ChangeMe123!`
 
 ## Discovery Workflow
@@ -58,14 +67,7 @@ Demo credentials after seeding:
 - `Sources`: enable or disable legal public sources, add new configs, and run sources manually
 - `Discovery Runs`: inspect fetch history, import counts, duplicates, parser failures, and logs
 - `Review Queue`: triage newly discovered jobs and take manual actions
-- `Dashboard`: filter by source, Trinidad and Tobago, remote-friendly, recent discoveries, match score, and workflow state
-
-Seeded demo discovery data includes:
-
-- A Trinidad-focused EmployTT-style discovered role
-- A remote platform engineer role discovered from an RSS source
-- A duplicate API-discovered remote role grouped into the same canonical job
-- A disabled Trinidad company careers template source for future expansion
+- `Dashboard`: filter by source, location, remote-friendly status, recent discoveries, match score, and workflow state
 
 ## Scheduled Discovery
 
@@ -79,23 +81,19 @@ Supported modes:
 - Run one source by sending `sourceId`
 - Authenticate with a signed-in session or a `CRON_SECRET` bearer token / `x-cron-secret` header
 
-This keeps the app deployable on Vercel or Netlify while still supporting local manual execution from the UI.
-
 ## Deployment Notes
 
 - Vercel: `vercel.json` is included. Set `DATABASE_URL`, `APP_URL`, `SESSION_SECRET`, and optionally `CRON_SECRET`.
 - Netlify: `netlify.toml` is included. Set the same environment variables before deploying.
 - For scheduled discovery, use the `/api/discovery/run` endpoint from your scheduler of choice if native background jobs are not available.
 
-## Validation Status
+## Validation
 
-The current implementation was validated with:
+Use these checks before shipping changes:
 
 - `npm run typecheck`
 - `npm run lint`
 - `npm run build`
-- `npm run db:push -- --accept-data-loss`
-- `npm run db:seed`
 
 ## Documentation
 

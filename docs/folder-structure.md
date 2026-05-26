@@ -5,10 +5,25 @@
 |-- docs
 |   |-- architecture.md
 |   `-- folder-structure.md
+|-- inspirations
+|   |-- ai-visualizations
+|   |-- cards
+|   |-- color-systems
+|   |-- dashboards
+|   |-- heroes
+|   |-- interactions
+|   |-- landing-pages
+|   |-- motion
+|   |-- navigation
+|   `-- typography
 |-- prisma
 |   |-- schema.prisma
 |   `-- seed.ts
 |-- public
+|   |-- branding
+|   |-- favicon.svg
+|   |-- icon.svg
+|   `-- manifest.webmanifest
 |-- src
 |   |-- app
 |   |   |-- (app)
@@ -28,13 +43,17 @@
 |   |       |-- discovery
 |   |       |-- jobs
 |   |       `-- resumes
+|   |-- assets
+|   |   `-- branding
 |   |-- components
 |   |   |-- applications
+|   |   |-- branding
 |   |   |-- dashboard
 |   |   |-- discovery
 |   |   |-- forms
 |   |   |-- jobs
 |   |   |-- layout
+|   |   |-- motion
 |   |   |-- profile
 |   |   |-- resume
 |   |   `-- ui
@@ -44,6 +63,7 @@
 |   |   |-- auth
 |   |   |-- data
 |   |   |-- db
+|   |   |-- design
 |   |   |-- discovery
 |   |   |   |-- sources
 |   |   |   |-- dedupe.ts

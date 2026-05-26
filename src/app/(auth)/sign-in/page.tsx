@@ -8,7 +8,7 @@ export default function SignInPage() {
     <div className="w-full max-w-xl space-y-6">
       <AuthForm
         action={signInAction}
-        description="Sign in to review ranked jobs, update your profile, and keep application prep editable and manual."
+        description="Sign in to review ranked opportunities, update your profile, and keep application prep editable and manual."
         submitLabel="Sign in"
         title="Welcome back"
       />
@@ -22,4 +22,3 @@ export default function SignInPage() {
     </div>
   );
 }
-

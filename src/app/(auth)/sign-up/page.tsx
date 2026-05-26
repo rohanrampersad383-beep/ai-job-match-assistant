@@ -8,7 +8,7 @@ export default function SignUpPage() {
     <div className="w-full max-w-xl space-y-6">
       <AuthForm
         action={signUpAction}
-        description="Create your account, define your job targets, and keep every application submission under your manual control."
+        description="Create your MatchIQ workspace, define your career targets, and keep every application submission under your manual control."
         includeName
         submitLabel="Create account"
         title="Create your workspace"
@@ -23,4 +23,3 @@ export default function SignUpPage() {
     </div>
   );
 }
-

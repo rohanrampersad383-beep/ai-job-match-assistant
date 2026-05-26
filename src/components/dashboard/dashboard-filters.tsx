@@ -19,11 +19,11 @@ export function DashboardFilters({ defaults, sources }: DashboardFiltersProps) {
   const needsReviewOnly = defaults.view === "needs-review";
 
   return (
-    <Card className="bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(246,250,253,0.94)_100%)] p-7">
+    <Card className="bg-[var(--surface)] p-7">
       <form className="grid gap-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">Opportunity filters</p>
+            <p className="text-sm font-semibold uppercase text-[var(--muted)]">Opportunity filters</p>
             <p className="mt-2 text-base font-semibold text-[var(--foreground-strong)]">Shape the shortlist without wasting space.</p>
             <p className="mt-1 text-sm text-[var(--secondary)]">
               Prioritize Trinidad and Tobago roles, remote-friendly openings, and discovery-driven jobs without cluttering the dashboard.
@@ -34,7 +34,7 @@ export function DashboardFilters({ defaults, sources }: DashboardFiltersProps) {
               Apply filters
             </SubmitButton>
             <Link
-              className="inline-flex cursor-pointer items-center justify-center rounded-[1rem] border border-[var(--border)] bg-white/85 px-4 py-3 text-sm font-semibold text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
+              className="inline-flex cursor-pointer items-center justify-center rounded-[1rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm font-semibold text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:-translate-y-0.5 hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
               href="/dashboard"
             >
               Reset
@@ -91,8 +91,8 @@ export function DashboardFilters({ defaults, sources }: DashboardFiltersProps) {
               <span className="mt-1 block text-xs text-[var(--muted)]">Jump straight to jobs waiting for a decision.</span>
             </span>
           </label>
-          <div className="rounded-[1.25rem] border border-[var(--border)] bg-white/88 px-4 py-3 shadow-[var(--shadow-soft)]">
-            <label className="block text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
+          <div className="rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 shadow-[var(--shadow-soft)]">
+            <label className="block text-xs font-semibold uppercase text-[var(--muted)]">
               Minimum match score
             </label>
             <Input

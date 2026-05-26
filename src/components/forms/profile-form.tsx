@@ -31,7 +31,7 @@ export function ProfileForm({
   return (
     <form action={formAction} className="grid gap-6">
       {redirectTo ? <input name="redirectTo" type="hidden" value={redirectTo} /> : null}
-      <Card className="bg-white/82">
+      <Card className="bg-[var(--surface)]">
         <CardTitle>Profile basics</CardTitle>
         <CardDescription className="mt-2">
           Capture your core profile so matching and draft generation stay grounded in real experience.
@@ -75,7 +75,7 @@ export function ProfileForm({
         </div>
       </Card>
 
-      <Card className="bg-white/82">
+      <Card className="bg-[var(--surface)]">
         <CardTitle>Targeting preferences</CardTitle>
         <CardDescription className="mt-2">
           These preferences shape discovery, scoring, and the shortlist shown in the dashboard and review queue.
@@ -166,7 +166,7 @@ export function ProfileForm({
               {WORK_MODES.map((mode) => (
                 <label
                   key={mode}
-                  className="flex cursor-pointer items-center gap-2 rounded-full border border-[var(--border)] bg-white/85 px-4 py-2 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-white"
+                  className="flex cursor-pointer items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]"
                 >
                   <input
                     className="size-4 accent-[var(--primary)]"
@@ -186,7 +186,7 @@ export function ProfileForm({
               {SENIORITY.map((level) => (
                 <label
                   key={level}
-                  className="flex cursor-pointer items-center gap-2 rounded-full border border-[var(--border)] bg-white/85 px-4 py-2 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-white"
+                  className="flex cursor-pointer items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]"
                 >
                   <input
                     className="size-4 accent-[var(--primary)]"
@@ -202,9 +202,9 @@ export function ProfileForm({
           </Field>
         </div>
 
-        <div className="mt-6 rounded-2xl bg-white/70 p-4">
+        <div className="mt-6 rounded-2xl bg-[var(--surface-muted)] p-4">
           <div className="grid gap-4 md:grid-cols-3">
-            <label className="flex cursor-pointer items-start gap-3 rounded-[1.2rem] border border-[var(--border)] bg-white/80 p-4 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-white/95">
+            <label className="flex cursor-pointer items-start gap-3 rounded-[1.2rem] border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]">
               <input
                 className="mt-1 size-4 accent-[var(--primary)]"
                 defaultChecked={defaults.prioritizeTrinidad !== false}
@@ -218,7 +218,7 @@ export function ProfileForm({
                 </FieldHint>
               </span>
             </label>
-            <label className="flex cursor-pointer items-start gap-3 rounded-[1.2rem] border border-[var(--border)] bg-white/80 p-4 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-white/95">
+            <label className="flex cursor-pointer items-start gap-3 rounded-[1.2rem] border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]">
               <input
                 className="mt-1 size-4 accent-[var(--primary)]"
                 defaultChecked={defaults.allowCaribbeanRemote !== false}
@@ -232,7 +232,7 @@ export function ProfileForm({
                 </FieldHint>
               </span>
             </label>
-            <label className="flex cursor-pointer items-start gap-3 rounded-[1.2rem] border border-[var(--border)] bg-white/80 p-4 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-white/95">
+            <label className="flex cursor-pointer items-start gap-3 rounded-[1.2rem] border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]">
               <input
                 className="mt-1 size-4 accent-[var(--primary)]"
                 defaultChecked={Boolean(defaults.autoHideEnabled)}

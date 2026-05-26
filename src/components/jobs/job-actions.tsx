@@ -43,7 +43,7 @@ export function JobActions({
         </SubmitButton>
       </form>
       <a
-        className="inline-flex items-center gap-2 rounded-[1rem] border border-[var(--border)] bg-white/92 px-4 py-2 text-sm font-semibold text-[var(--secondary)]"
+        className="inline-flex items-center gap-2 rounded-[1rem] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-semibold text-[var(--secondary)]"
         href={applicationUrl}
         rel="noreferrer"
         target="_blank"

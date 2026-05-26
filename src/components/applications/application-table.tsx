@@ -29,7 +29,7 @@ export function ApplicationTable({
   return (
     <div className="grid gap-4">
       {applications.map((application) => (
-        <Card key={application.id} className="interactive-card bg-white/88 p-5">
+        <Card key={application.id} className="interactive-card bg-[var(--surface)] p-5">
           <form action={updateApplicationAction} className="grid gap-5">
             <input name="applicationId" type="hidden" value={application.id} />
 
@@ -79,7 +79,7 @@ export function ApplicationTable({
               <label className="flex flex-col gap-2 text-sm font-medium text-[var(--secondary)]">
                 Follow-up date
                 <input
-                  className="rounded-[1rem] border border-[var(--border)] bg-white/94 px-4 py-3 shadow-sm transition hover:border-[var(--border-strong)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20"
+                  className="rounded-[1rem] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-3 shadow-sm transition hover:border-[var(--border-strong)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/20"
                   defaultValue={application.followUpDate ? new Date(application.followUpDate).toISOString().slice(0, 10) : ""}
                   name="followUpDate"
                   type="date"
@@ -102,7 +102,7 @@ export function ApplicationTable({
                 Update tracker entry
               </SubmitButton>
               <a
-                className="inline-flex items-center justify-center rounded-[1rem] border border-[var(--border)] bg-white/92 px-4 py-2 text-sm font-semibold text-[var(--secondary)]"
+                className="inline-flex items-center justify-center rounded-[1rem] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-semibold text-[var(--secondary)]"
                 href={application.job.applicationUrl}
                 rel="noreferrer"
                 target="_blank"

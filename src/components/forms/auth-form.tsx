@@ -27,7 +27,7 @@ export function AuthForm({
   const [state, formAction, pending] = useActionState(action, initialActionState);
 
   return (
-    <Card className="w-full max-w-xl bg-white/85">
+    <Card className="w-full max-w-xl bg-[var(--surface)]">
       <CardTitle>{title}</CardTitle>
       <CardDescription className="mt-2">{description}</CardDescription>
       <form action={formAction} className="mt-6 flex flex-col gap-4">
@@ -53,4 +53,3 @@ export function AuthForm({
     </Card>
   );
 }
-

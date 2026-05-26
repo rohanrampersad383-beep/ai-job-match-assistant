@@ -65,7 +65,7 @@ export default async function ReviewQueuePage({
               pendingLabel="Running discovery..."
             />
             <Link
-              className="inline-flex cursor-pointer rounded-2xl border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-white/55 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
+              className="inline-flex cursor-pointer rounded-2xl border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-[var(--border)] hover:bg-[var(--surface-raised)]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)]"
               href="/sources"
             >
               Sources

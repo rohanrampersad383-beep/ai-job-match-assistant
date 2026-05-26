@@ -76,7 +76,7 @@ export default async function DashboardPage({
       <PageHeader
         eyebrow="Dashboard"
         title="Ranked opportunities"
-        description="Review newly discovered and manually added jobs in one place, prioritize Trinidad and Tobago opportunities, and keep every application step fully manual."
+        description="Review newly discovered and manually added opportunities in one place, prioritize high-signal matches, and keep every application step fully manual."
         actions={
           <>
             <DiscoveryActionForm
@@ -86,13 +86,13 @@ export default async function DashboardPage({
               pendingLabel="Running discovery..."
             />
             <Link
-              className="inline-flex items-center justify-center rounded-[1rem] border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-white/55 hover:bg-white/10"
+              className="inline-flex items-center justify-center rounded-[1rem] border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-[var(--border)] hover:bg-[var(--surface-raised)]/10"
               href="/review-queue"
             >
               Review queue
             </Link>
             <Link
-              className="inline-flex items-center justify-center rounded-[1rem] border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-white/55 hover:bg-white/10"
+              className="inline-flex items-center justify-center rounded-[1rem] border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-[var(--border)] hover:bg-[var(--surface-raised)]/10"
               href="/sources"
             >
               Sources
@@ -140,14 +140,14 @@ export default async function DashboardPage({
         />
       )}
 
-      <div className="flex items-center justify-between rounded-[1.5rem] border border-[var(--border)] bg-white/78 px-5 py-4 text-sm text-[var(--secondary)]">
+      <div className="flex items-center justify-between rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface)] px-5 py-4 text-sm text-[var(--secondary)]">
         <span>
           Page {data.page} of {data.totalPages}
         </span>
         <div className="flex gap-3">
           {data.page > 1 ? (
             <Link
-              className="inline-flex items-center justify-center rounded-full border border-[var(--border)] px-4 py-2 font-medium hover:bg-white"
+              className="inline-flex items-center justify-center rounded-full border border-[var(--border)] px-4 py-2 font-medium hover:bg-[var(--surface-raised)]"
               href={buildPageHref(filters, data.page - 1)}
             >
               Previous
@@ -155,7 +155,7 @@ export default async function DashboardPage({
           ) : null}
           {data.page < data.totalPages ? (
             <Link
-              className="inline-flex items-center justify-center rounded-full border border-[var(--border)] px-4 py-2 font-medium hover:bg-white"
+              className="inline-flex items-center justify-center rounded-full border border-[var(--border)] px-4 py-2 font-medium hover:bg-[var(--surface-raised)]"
               href={buildPageHref(filters, data.page + 1)}
             >
               Next

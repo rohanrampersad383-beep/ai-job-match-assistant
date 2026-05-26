@@ -5,17 +5,17 @@ import { type ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-[1rem] border text-sm font-semibold shadow-sm transition focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60",
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] border text-sm font-semibold shadow-sm transition focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60",
   {
     variants: {
       variant: {
         primary:
-          "border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)] hover:border-[var(--primary)]/90 hover:bg-[#0b6e5b]",
+          "border-[var(--primary)] bg-[image:var(--gradient-brand)] text-[var(--primary-foreground)] shadow-[var(--shadow-glow)] hover:border-[var(--accent-cyan)]",
         secondary:
-          "border-[var(--border)] bg-white/92 text-[var(--secondary)] hover:border-[var(--border-strong)] hover:bg-white",
+          "border-[var(--border)] bg-[var(--surface-raised)] text-[var(--foreground)] hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]",
         ghost:
-          "border-transparent bg-transparent text-[var(--secondary)] hover:bg-white/70 hover:text-[var(--foreground)]",
-        danger: "border-[var(--danger)] bg-[var(--danger)] text-white hover:bg-[#af3528]"
+          "border-transparent bg-transparent text-[var(--secondary)] hover:bg-[var(--surface-muted)] hover:text-[var(--foreground)]",
+        danger: "border-[var(--danger)] bg-[var(--danger)] text-white hover:opacity-90"
       },
       size: {
         sm: "min-h-10 px-3.5 py-2",

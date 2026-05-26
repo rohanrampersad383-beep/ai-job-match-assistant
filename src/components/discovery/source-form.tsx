@@ -50,14 +50,14 @@ export function SourceForm({
   return (
     <form action={formAction} className="grid gap-4">
       {defaults.id ? <input name="id" type="hidden" value={defaults.id} /> : null}
-      <Card className="bg-white/82">
+      <Card className="bg-[var(--surface)]">
         <CardTitle>{title}</CardTitle>
         <CardDescription className="mt-2">{description}</CardDescription>
 
         <div className="mt-6 grid gap-5">
-          <section className="rounded-[1.5rem] border border-white/65 bg-white/72 p-5 shadow-[var(--shadow-soft)]">
+          <section className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow-soft)]">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+              <h3 className="text-sm font-semibold uppercase text-[var(--muted)]">
                 Source identity
               </h3>
               <p className="mt-2 text-sm leading-6 text-[var(--secondary)]">
@@ -95,9 +95,9 @@ export function SourceForm({
             </div>
           </section>
 
-          <section className="rounded-[1.5rem] border border-white/65 bg-white/72 p-5 shadow-[var(--shadow-soft)]">
+          <section className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow-soft)]">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+              <h3 className="text-sm font-semibold uppercase text-[var(--muted)]">
                 Retrieval and parsing
               </h3>
               <p className="mt-2 text-sm leading-6 text-[var(--secondary)]">
@@ -165,9 +165,9 @@ export function SourceForm({
             </div>
           </section>
 
-          <section className="rounded-[1.5rem] border border-white/65 bg-white/72 p-5 shadow-[var(--shadow-soft)]">
+          <section className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow-soft)]">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-[var(--muted)]">
+              <h3 className="text-sm font-semibold uppercase text-[var(--muted)]">
                 Legal and safety notes
               </h3>
               <p className="mt-2 text-sm leading-6 text-[var(--secondary)]">
@@ -189,7 +189,7 @@ export function SourceForm({
           </section>
         </div>
 
-        <label className="mt-6 flex items-start gap-3 rounded-[1.35rem] border border-[var(--border)] bg-white/80 p-4 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-white/90">
+        <label className="mt-6 flex items-start gap-3 rounded-[1.35rem] border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--secondary)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]">
           <input className="mt-1 size-4 accent-[var(--primary)]" defaultChecked={defaults.enabled ?? true} name="enabled" type="checkbox" />
           <span>
             Enable this source immediately.

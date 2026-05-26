@@ -49,7 +49,7 @@ export function ReviewQueueCard({
   const reasons = Array.isArray(match?.reasons) ? (match?.reasons as ScoreReason[]) : [];
 
   return (
-    <Card className="interactive-card bg-white/88 p-5">
+    <Card className="interactive-card bg-[var(--surface)] p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1 space-y-2">
           <div className="flex flex-wrap gap-2">
@@ -72,9 +72,9 @@ export function ReviewQueueCard({
             {job.location} | Discovered {formatDate(job.discoveredAt)}
           </CardDescription>
         </div>
-        <div className="min-w-[126px] rounded-[1.35rem] bg-[var(--secondary)] px-4 py-4 text-right text-[var(--primary-foreground)] shadow-[var(--shadow-soft)]">
-          <p className="text-xs uppercase tracking-[0.24em]">Match</p>
-          <p className="mt-2 text-4xl font-semibold tracking-[-0.04em]">{match?.matchPercent ?? 0}%</p>
+        <div className="min-w-[126px] rounded-[1.35rem] bg-[image:var(--gradient-brand)] px-4 py-4 text-right text-[var(--primary-foreground)] shadow-[var(--shadow-glow)]">
+          <p className="text-xs uppercase">Match</p>
+          <p className="mt-2 text-4xl font-semibold ">{match?.matchPercent ?? 0}%</p>
           <p className="mt-1 text-xs text-white/72">{match?.applyWorthIt ?? "MAYBE"}</p>
         </div>
       </div>
@@ -91,8 +91,8 @@ export function ReviewQueueCard({
               reason.tone === "positive"
                 ? "bg-[var(--success)]/10 text-[var(--success)]"
                 : reason.tone === "warning"
-                  ? "bg-[var(--accent)]/18 text-[#8a6100]"
-                  : "bg-[var(--muted-surface)] text-[var(--secondary)]"
+                  ? "bg-[var(--accent)]/18 text-[var(--warning)]"
+                  : "bg-[var(--surface-muted)] text-[var(--secondary)]"
             }`}
           >
             {reason.label}
@@ -126,7 +126,7 @@ export function ReviewQueueCard({
           </SubmitButton>
         </form>
         <a
-          className="inline-flex items-center justify-center rounded-[1rem] border border-[var(--border)] bg-white/92 px-4 py-2 text-sm font-semibold text-[var(--secondary)]"
+          className="inline-flex items-center justify-center rounded-[1rem] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-semibold text-[var(--secondary)]"
           href={job.applicationUrl}
           rel="noreferrer"
           target="_blank"

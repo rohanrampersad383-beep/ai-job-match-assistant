@@ -36,7 +36,7 @@ export default async function JobDetailPage({
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card className="bg-white/82">
+        <Card className="bg-[var(--surface)]">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <CardTitle>{job.title}</CardTitle>
@@ -45,7 +45,7 @@ export default async function JobDetailPage({
               </CardDescription>
             </div>
             <div className="rounded-[1.5rem] bg-[var(--primary)] px-5 py-4 text-center text-white">
-              <p className="text-xs uppercase tracking-[0.24em]">Match</p>
+              <p className="text-xs uppercase">Match</p>
               <p className="text-3xl font-semibold">{match?.matchPercent ?? 0}%</p>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default async function JobDetailPage({
         </Card>
 
         <div className="grid gap-6">
-          <Card className="bg-white/82">
+          <Card className="bg-[var(--surface)]">
             <CardTitle>Why this job scored the way it did</CardTitle>
             <div className="mt-4 space-y-3">
               {reasons.length ? (
@@ -96,8 +96,8 @@ export default async function JobDetailPage({
                       reason.tone === "positive"
                         ? "bg-[var(--success)]/10 text-[var(--success)]"
                         : reason.tone === "warning"
-                          ? "bg-[var(--accent)]/18 text-[#8a6100]"
-                          : "bg-[var(--muted-surface)] text-[var(--secondary)]"
+                          ? "bg-[var(--accent)]/18 text-[var(--warning)]"
+                          : "bg-[var(--surface-muted)] text-[var(--secondary)]"
                     }`}
                   >
                     {reason.label}

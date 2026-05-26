@@ -4,7 +4,7 @@ export default function NotFoundPage() {
   return (
     <main className="container-shell flex min-h-screen items-center justify-center py-12">
       <div className="glass-panel max-w-xl rounded-[2rem] p-10 text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--primary)]">
+        <p className="text-sm font-semibold uppercase text-[var(--primary)]">
           404
         </p>
         <h1 className="mt-4 text-4xl font-semibold text-[var(--foreground)]">

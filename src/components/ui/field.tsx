@@ -7,10 +7,9 @@ export function Field({ children, className }: PropsWithChildren<{ className?: s
 }
 
 export function FieldLabel({ children, className }: PropsWithChildren<{ className?: string }>) {
-  return <span className={cn("text-sm font-medium text-[var(--secondary)]", className)}>{children}</span>;
+  return <span className={cn("text-sm font-medium text-[var(--secondary-strong)]", className)}>{children}</span>;
 }
 
 export function FieldHint({ children, className }: PropsWithChildren<{ className?: string }>) {
   return <span className={cn("text-xs text-[var(--muted)]", className)}>{children}</span>;
 }
-

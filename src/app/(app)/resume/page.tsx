@@ -31,7 +31,7 @@ export default async function ResumePage({
         description="Upload a PDF or DOCX resume, inspect the extracted fields, and correct them before the matching engine uses them."
       />
 
-      <Card className="bg-white/82">
+      <Card className="bg-[var(--surface)]">
         <CardTitle>Upload resume</CardTitle>
         <CardDescription className="mt-2">
           Files are parsed in-memory. The app stores raw extracted text plus structured review data in PostgreSQL.
@@ -40,7 +40,7 @@ export default async function ResumePage({
         <div className="mt-6 grid gap-4 md:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
           <form
             action="/api/resumes/upload"
-            className="rounded-[1.5rem] border border-white/65 bg-white/72 p-5 shadow-[var(--shadow-soft)]"
+            className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow-soft)]"
             encType="multipart/form-data"
             method="post"
           >
@@ -66,7 +66,7 @@ export default async function ResumePage({
             <div className="grid gap-4">
               <input
                 accept=".pdf,.doc,.docx,.txt,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
-                className="rounded-[var(--radius-control)] border border-[var(--border)] bg-white/92 px-4 py-3 text-sm text-[var(--foreground-strong)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
+                className="rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-3 text-sm text-[var(--foreground-strong)] shadow-[var(--shadow-soft)] transition hover:border-[var(--border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2"
                 name="resume"
                 required
                 type="file"
@@ -77,7 +77,7 @@ export default async function ResumePage({
             </div>
           </form>
 
-          <div className="rounded-[1.5rem] border border-white/65 bg-white/72 p-5 shadow-[var(--shadow-soft)]">
+          <div className="rounded-[1.5rem] border border-[var(--border)] bg-[var(--surface-muted)] p-5 shadow-[var(--shadow-soft)]">
             <p className="text-sm font-semibold text-[var(--foreground-strong)]">What to review closely</p>
             <div className="mt-4 grid gap-3 text-sm text-[var(--secondary)]">
               <div className="surface-note">
@@ -96,7 +96,7 @@ export default async function ResumePage({
 
       {latestResume ? (
         <>
-          <Card className="bg-white/78">
+          <Card className="bg-[var(--surface)]">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <CardTitle>Latest upload</CardTitle>
@@ -107,7 +107,7 @@ export default async function ResumePage({
                 <Badge variant="discovery">{latestResume.fileName}</Badge>
               </div>
             </div>
-            <pre className="mt-4 max-h-80 overflow-auto whitespace-pre-wrap rounded-2xl bg-[var(--muted-surface)] p-4 text-sm leading-7 text-[var(--secondary)]">
+            <pre className="mt-4 max-h-80 overflow-auto whitespace-pre-wrap rounded-2xl bg-[var(--surface-muted)] p-4 text-sm leading-7 text-[var(--secondary)]">
               {latestResume.rawText}
             </pre>
           </Card>

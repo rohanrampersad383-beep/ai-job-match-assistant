@@ -45,7 +45,7 @@ export function DiscoveryRunCard({
   };
 }) {
   return (
-    <Card className="interactive-card bg-white/88 p-5">
+    <Card className="interactive-card bg-[var(--surface)] p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="mb-3 flex flex-wrap gap-2">
@@ -62,24 +62,24 @@ export function DiscoveryRunCard({
 
       <div className="mt-6 grid gap-4 md:grid-cols-5">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Found</p>
-          <p className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-[var(--foreground)]">{run.jobsFound}</p>
+          <p className="text-xs uppercase text-[var(--muted)]">Found</p>
+          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.jobsFound}</p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Imported</p>
-          <p className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-[var(--foreground)]">{run.jobsImported}</p>
+          <p className="text-xs uppercase text-[var(--muted)]">Imported</p>
+          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.jobsImported}</p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Duplicates</p>
-          <p className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-[var(--foreground)]">{run.duplicatesSkipped}</p>
+          <p className="text-xs uppercase text-[var(--muted)]">Duplicates</p>
+          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.duplicatesSkipped}</p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Parsing failures</p>
-          <p className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-[var(--foreground)]">{run.parsingFailures}</p>
+          <p className="text-xs uppercase text-[var(--muted)]">Parsing failures</p>
+          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.parsingFailures}</p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted)]">Runtime errors</p>
-          <p className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-[var(--foreground)]">{run.runtimeErrors}</p>
+          <p className="text-xs uppercase text-[var(--muted)]">Runtime errors</p>
+          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.runtimeErrors}</p>
         </div>
       </div>
 
@@ -88,7 +88,7 @@ export function DiscoveryRunCard({
           <h3 className="text-sm font-semibold text-[var(--secondary)]">Latest logs</h3>
           <div className="mt-3 grid gap-2">
             {run.logs.map((log) => (
-              <div key={log.id} className="rounded-2xl bg-white/75 px-4 py-3 text-sm text-[var(--secondary)]">
+              <div key={log.id} className="rounded-2xl bg-[var(--surface-muted)] px-4 py-3 text-sm text-[var(--secondary)]">
                 {log.message}
               </div>
             ))}
