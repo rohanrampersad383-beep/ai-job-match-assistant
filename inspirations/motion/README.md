@@ -4,6 +4,9 @@
 
 - Motion.dev transitions: https://motion.dev/motion/transition
 - Motion.dev React animation: https://motion.dev/docs/react-animation
+- Motion.dev in-view animation: https://motion.dev/docs/inview
+- Anime.js stagger utilities: https://animejs.com/documentation/utilities/stagger/
+- GSAP quickSetter performance pattern: https://gsap.com/docs/v3/GSAP/gsap.quickSetter/
 - Framer reduced motion: https://www.framer.com/help/articles/reduced-motion-settings/
 
 ## Notes

@@ -3,6 +3,8 @@
 ## Inspiration Links
 
 - Add interaction references here.
+- Motion.dev transitions: https://motion.dev/motion/transition
+- GSAP quickTo: https://gsap.com/docs/v3/GSAP/gsap.quickTo/
 
 ## Notes
 

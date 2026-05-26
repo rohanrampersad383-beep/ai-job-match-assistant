@@ -3,6 +3,8 @@
 ## Inspiration Links
 
 - Add hero and first-viewport references here.
+- Vercel Geist foundation: https://vercel.com/geist/introduction
+- Motion.dev scroll animation patterns: https://motion.dev/docs/react-scroll-animations
 
 ## Notes
 

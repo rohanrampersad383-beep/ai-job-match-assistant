@@ -344,6 +344,48 @@ input::file-selector-button {
   animation: shimmer 1.8s var(--ease-out) infinite;
 }
 
+.landing-signal-line {
+  fill: none;
+  stroke: url(#matchiq-signal-line);
+  stroke-dasharray: 10 14;
+  stroke-linecap: round;
+  stroke-width: 1.4;
+  animation: signal-flow 7s linear infinite;
+}
+
+.landing-signal-line.delay-1,
+.landing-pulse.delay-1 {
+  animation-delay: -1.8s;
+}
+
+.landing-signal-line.delay-2 {
+  animation-delay: -3.2s;
+}
+
+.landing-pulse {
+  fill: none;
+  stroke: rgba(47, 107, 255, 0.22);
+  stroke-width: 1;
+  transform-origin: center;
+  animation: pulse-ring 5.8s var(--ease-soft) infinite;
+}
+
+.landing-node {
+  animation: subtle-float 7s var(--ease-soft) infinite;
+}
+
+.landing-float-card {
+  animation: landing-card-float 8s var(--ease-soft) infinite;
+}
+
+.landing-float-card:nth-child(2) {
+  animation-delay: -2.1s;
+}
+
+.landing-float-card:nth-child(3) {
+  animation-delay: -4.2s;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -377,6 +419,34 @@ input::file-selector-button {
 @keyframes shimmer {
   to {
     transform: translateX(100%);
+  }
+}
+
+@keyframes signal-flow {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+@keyframes pulse-ring {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.58;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes landing-card-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
   }
 }
 

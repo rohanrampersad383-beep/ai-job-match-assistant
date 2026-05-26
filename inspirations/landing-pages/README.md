@@ -3,6 +3,8 @@
 ## Inspiration Links
 
 - Add premium SaaS landing page references here.
+- Vercel Geist foundation: https://vercel.com/geist/introduction
+- Motion.dev React animation: https://motion.dev/docs/react-animation
 
 ## Notes
 
