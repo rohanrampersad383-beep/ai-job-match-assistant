@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    <html data-scroll-behavior="smooth" lang="en">
       <body className={`${geist.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${geist.className}`}>
         {children}
       </body>

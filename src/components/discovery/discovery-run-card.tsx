@@ -1,3 +1,5 @@
+import { AlertTriangle, CheckCircle2, Clock3, DatabaseZap } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
@@ -44,13 +46,19 @@ export function DiscoveryRunCard({
     }>;
   };
 }) {
+  const importedRate = run.jobsFound ? Math.round((run.jobsImported / run.jobsFound) * 100) : 0;
+  const issueCount = run.parsingFailures + run.runtimeErrors;
+  const statusIcon = run.status === "SUCCESS" ? CheckCircle2 : run.status === "FAILED" ? AlertTriangle : Clock3;
+  const StatusIcon = statusIcon;
+
   return (
-    <Card className="interactive-card bg-[var(--surface)] p-5">
+    <Card className="interactive-card bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.1),transparent_28%),var(--surface)] p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="mb-3 flex flex-wrap gap-2">
             <Badge variant="discovery">{run.source.sourceType}</Badge>
             <Badge variant={statusVariant(run.status)}>{run.status}</Badge>
+            {issueCount ? <Badge variant="warning">{issueCount} issues</Badge> : <Badge variant="success">Clean run</Badge>}
           </div>
           <CardTitle className="text-[1.45rem]">{run.source.name}</CardTitle>
           <CardDescription className="mt-2">
@@ -58,29 +66,34 @@ export function DiscoveryRunCard({
             {run.finishedAt ? ` | Finished ${formatDate(run.finishedAt)}` : ""}
           </CardDescription>
         </div>
+        <div className="grid size-12 place-items-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] text-[var(--accent-cyan)]">
+          <StatusIcon className="size-5" />
+        </div>
       </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-5">
-        <div>
-          <p className="text-xs uppercase text-[var(--muted)]">Found</p>
-          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.jobsFound}</p>
+      <div className="mt-6 grid gap-4 md:grid-cols-[1.1fr_repeat(4,minmax(0,0.7fr))]">
+        <div className="rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+          <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase text-[var(--muted)]">
+            <DatabaseZap className="size-4 text-[var(--accent-cyan)]" />
+            Import health
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-white/8">
+            <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${importedRate}%` }} />
+          </div>
+          <p className="mt-2 text-sm text-[var(--secondary)]">{importedRate}% of found jobs imported</p>
         </div>
-        <div>
-          <p className="text-xs uppercase text-[var(--muted)]">Imported</p>
-          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.jobsImported}</p>
-        </div>
-        <div>
-          <p className="text-xs uppercase text-[var(--muted)]">Duplicates</p>
-          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.duplicatesSkipped}</p>
-        </div>
-        <div>
-          <p className="text-xs uppercase text-[var(--muted)]">Parsing failures</p>
-          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.parsingFailures}</p>
-        </div>
-        <div>
-          <p className="text-xs uppercase text-[var(--muted)]">Runtime errors</p>
-          <p className="mt-1 text-2xl font-semibold  text-[var(--foreground)]">{run.runtimeErrors}</p>
-        </div>
+        {[
+          ["Found", run.jobsFound],
+          ["Imported", run.jobsImported],
+          ["Duplicates", run.duplicatesSkipped],
+          ["Failures", run.parsingFailures],
+          ["Runtime errors", run.runtimeErrors]
+        ].map(([label, value]) => (
+          <div key={label} className="rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+            <p className="text-xs uppercase text-[var(--muted)]">{label}</p>
+            <p className="mt-1 text-2xl font-semibold text-[var(--foreground)]">{value}</p>
+          </div>
+        ))}
       </div>
 
       {run.logs.length ? (
