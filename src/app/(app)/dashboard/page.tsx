@@ -29,11 +29,13 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { runAllDiscoverySourcesFeedbackAction } from "@/lib/actions/discovery";
 import { requireUser } from "@/lib/auth/session";
 import { getDashboardData } from "@/lib/data/dashboard";
+import { analyzeCareerIntelligence, explainJobMatch, type CareerIntelligence } from "@/lib/intelligence/career";
 import { clamp, cn, formatCurrency, formatDate, titleCase } from "@/lib/utils";
-import type { DashboardFilters as DashboardFilterInput, ScoreReason } from "@/types";
+import type { DashboardFilters as DashboardFilterInput } from "@/types";
 
 type DashboardData = Awaited<ReturnType<typeof getDashboardData>>;
 type DashboardJob = DashboardData["jobs"][number];
+type SkillSignals = Pick<CareerIntelligence, "strengths" | "gaps" | "demand">;
 
 function asString(value: string | string[] | undefined) {
   return typeof value === "string" ? value : undefined;
@@ -94,11 +96,6 @@ function getMatch(job: DashboardJob) {
   return job.matches[0];
 }
 
-function getReasons(job: DashboardJob): ScoreReason[] {
-  const reasons = getMatch(job)?.reasons;
-  return Array.isArray(reasons) ? (reasons as ScoreReason[]) : [];
-}
-
 function getScoreValues(jobs: DashboardJob[], data: DashboardData) {
   const scores = jobs.map((job) => getMatch(job)?.matchPercent ?? 0).filter((score) => score > 0);
   const best = scores.length ? Math.max(...scores) : data.stats?.jobMatches[0]?.matchPercent ?? 0;
@@ -122,33 +119,6 @@ function getScoreValues(jobs: DashboardJob[], data: DashboardData) {
 
 function getStatusCounts(data: DashboardData) {
   return new Map(data.applicationStatusCounts.map((item) => [item.status, item._count._all]));
-}
-
-function getSkillSignals(jobs: DashboardJob[], data: DashboardData) {
-  const latestResume = data.user?.resumes[0]?.extractedData;
-  const preferences = data.user?.preferences;
-  const matchedSkills = jobs.flatMap((job) => getMatch(job)?.matchedSkills ?? []);
-  const missingSkills = jobs.flatMap((job) => getMatch(job)?.missingSkills ?? []);
-  const demandSkills = jobs.flatMap((job) => [...job.requiredSkills, ...job.preferredSkills]);
-
-  const strengths = uniqueStrings([
-    ...(preferences?.topSkills ?? []),
-    ...(latestResume?.technicalSkills ?? []),
-    ...matchedSkills
-  ]).slice(0, 6);
-
-  const gaps = uniqueStrings(missingSkills.length ? missingSkills : demandSkills).slice(0, 5);
-  const demand = uniqueStrings(demandSkills).filter((skill) => !strengths.includes(skill)).slice(0, 5);
-
-  return {
-    strengths: strengths.length ? strengths : ["Profile targeting", "Application focus", "Role analysis"],
-    gaps: gaps.length ? gaps : ["Cloud deployment keywords", "AI tooling evidence", "Portfolio proof points"],
-    demand: demand.length ? demand : ["React", "SQL", "Automation", "Cloud", "Analytics"]
-  };
-}
-
-function uniqueStrings(values: string[]) {
-  return Array.from(new Set(values.map((value) => value.trim()).filter(Boolean)));
 }
 
 function formatSalary(job: DashboardJob) {
@@ -185,7 +155,18 @@ export default async function DashboardPage({
   );
   const scoreValues = getScoreValues(jobs, data);
   const topMatches = jobs.slice(0, 3);
-  const skills = getSkillSignals(jobs, data);
+  const intelligence = analyzeCareerIntelligence({
+    jobs,
+    summary: data.summary,
+    total: data.total,
+    profile: data.user?.preferences,
+    resume: data.user?.resumes[0]?.extractedData
+  });
+  const skills = {
+    strengths: intelligence.strengths,
+    gaps: intelligence.gaps,
+    demand: intelligence.demand
+  };
   const statusCounts = getStatusCounts(data);
   const interviewing = statusCounts.get("INTERVIEWING") ?? 0;
   const offers = (statusCounts.get("OFFER") ?? 0) + (statusCounts.get("ARCHIVED") ?? 0);
@@ -196,12 +177,8 @@ export default async function DashboardPage({
     { label: "Interviewing", value: interviewing, icon: Route, tone: "text-[var(--warning)]" },
     { label: "Offer / closed", value: offers, icon: CheckCircle2, tone: "text-[var(--accent)]" }
   ];
-  const primaryInsight = topMatches[0]
-    ? `Your strongest active match is ${topMatches[0].title} at ${topMatches[0].company}, currently scoring ${getMatch(topMatches[0])?.matchPercent ?? 0}%.`
-    : "Run discovery or import opportunities to activate your career intelligence feed.";
-  const reviewCopy = data.summary.needsReview
-    ? `${data.summary.needsReview} opportunities need review before the queue is clean.`
-    : "Your review queue is clear. New discovery runs will surface fresh fit signals here.";
+  const primaryInsight = intelligence.insights[0];
+  const reviewCopy = intelligence.insights[3];
 
   return (
     <div className="motion-stagger space-y-6">
@@ -220,7 +197,7 @@ export default async function DashboardPage({
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted-strong)] md:text-lg">
                   {data.summary.highMatchJobs
-                    ? `${data.summary.highMatchJobs} high-fit opportunities are ready for review, with ${data.summary.remoteJobs} remote-friendly signals in the current intelligence set.`
+                    ? `${data.summary.highMatchJobs} high-fit opportunities are ready for review. ${intelligence.roleCluster} is the strongest active opportunity cluster.`
                     : `MatchIQ is monitoring ${data.total} ranked opportunities and prioritizing the roles most aligned with your profile.`}
                 </p>
               </div>
@@ -257,7 +234,7 @@ export default async function DashboardPage({
           </div>
         </Card>
 
-        <MatchScoreModule scoreValues={scoreValues} />
+        <MatchScoreModule intelligence={intelligence} scoreValues={scoreValues} />
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_390px]">
@@ -267,7 +244,7 @@ export default async function DashboardPage({
         </div>
 
         <div className="space-y-6">
-          <AIInsightPanel primaryInsight={primaryInsight} reviewCopy={reviewCopy} skills={skills} />
+          <AIInsightPanel intelligence={intelligence} primaryInsight={primaryInsight} reviewCopy={reviewCopy} />
           <ActivityFeed data={data} jobs={jobs} skills={skills} />
         </div>
       </section>
@@ -276,6 +253,8 @@ export default async function DashboardPage({
         <PipelinePanel pipeline={pipeline} />
         <SkillIntelligence skills={skills} />
       </section>
+
+      <ProfileIntelligence intelligence={intelligence} />
 
       <DashboardFilters
         defaults={{
@@ -375,7 +354,13 @@ function StatsOverview({ data }: { data: DashboardData }) {
   );
 }
 
-function MatchScoreModule({ scoreValues }: { scoreValues: ReturnType<typeof getScoreValues> }) {
+function MatchScoreModule({
+  intelligence,
+  scoreValues
+}: {
+  intelligence: CareerIntelligence;
+  scoreValues: ReturnType<typeof getScoreValues>;
+}) {
   const ringStyle = {
     "--match-score-angle": `${scoreValues.score * 3.6}deg`
   } as CSSProperties;
@@ -387,6 +372,7 @@ function MatchScoreModule({ scoreValues }: { scoreValues: ReturnType<typeof getS
         <div>
           <p className="text-sm font-semibold uppercase text-[var(--muted)]">Match score system</p>
           <h2 className="mt-2 font-display text-2xl font-semibold text-white">Compatibility radar</h2>
+          <p className="mt-2 max-w-md text-sm leading-6 text-[var(--muted)]">{intelligence.roleCluster}</p>
         </div>
         <Badge variant="discovery">AI weighted</Badge>
       </div>
@@ -455,13 +441,17 @@ function TopMatches({ jobs }: { jobs: DashboardJob[] }) {
         <div className="grid gap-3">
           {jobs.map((job) => {
             const match = getMatch(job);
-            const reason = getReasons(job)[0]?.label ?? "Strong fit across your current career signals.";
+            const explanation = explainJobMatch(job);
+            const reason = explanation.strongestAlignment[0] ?? explanation.summary;
             return (
               <article key={job.id} className="interactive-card rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div className="min-w-0">
                     <div className="mb-2 flex flex-wrap gap-2">
                       <Badge variant="matchMedium">{match?.matchPercent ?? 0}% match</Badge>
+                      {explanation.confidence.badges.slice(0, 2).map((badge) => (
+                        <Badge key={badge} variant={badge === "Skill Gap" ? "warning" : "discovery"}>{badge}</Badge>
+                      ))}
                       <Badge variant="neutral">{job.workMode ? titleCase(job.workMode) : "Work mode TBD"}</Badge>
                       <Badge variant="neutral">{formatSalary(job)}</Badge>
                     </div>
@@ -504,18 +494,18 @@ function TopMatches({ jobs }: { jobs: DashboardJob[] }) {
 }
 
 function AIInsightPanel({
+  intelligence,
   primaryInsight,
-  reviewCopy,
-  skills
+  reviewCopy
 }: {
+  intelligence: CareerIntelligence;
   primaryInsight: string;
   reviewCopy: string;
-  skills: ReturnType<typeof getSkillSignals>;
 }) {
   const insights = [
     primaryInsight,
     reviewCopy,
-    `${skills.gaps[0]} is the clearest keyword gap to improve match confidence.`
+    intelligence.insights[4]
   ];
 
   return (
@@ -525,6 +515,15 @@ function AIInsightPanel({
       </div>
       <p className="text-sm font-semibold uppercase text-[var(--muted)]">AI insight</p>
       <h2 className="mt-2 max-w-[16rem] font-display text-2xl font-semibold text-white">Career signal readout</h2>
+      <div className="mt-4 rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-3">
+        <div className="mb-2 flex items-center justify-between text-xs font-semibold uppercase text-[var(--muted)]">
+          <span>Profile readiness</span>
+          <span className="text-[var(--accent-cyan)]">{intelligence.profileScore}%</span>
+        </div>
+        <div className="h-2 overflow-hidden rounded-full bg-white/8">
+          <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${intelligence.profileScore}%` }} />
+        </div>
+      </div>
       <div className="mt-6 grid gap-3">
         {insights.map((insight, index) => (
           <div key={insight} className="rounded-[1rem] border border-[var(--border)] bg-black/16 p-4">
@@ -584,7 +583,7 @@ function PipelinePanel({
   );
 }
 
-function SkillIntelligence({ skills }: { skills: ReturnType<typeof getSkillSignals> }) {
+function SkillIntelligence({ skills }: { skills: SkillSignals }) {
   return (
     <Card className="border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-6">
       <div className="flex items-start justify-between gap-4">
@@ -640,7 +639,56 @@ function SkillColumn({
   );
 }
 
-function ActivityFeed({ data, jobs, skills }: { data: DashboardData; jobs: DashboardJob[]; skills: ReturnType<typeof getSkillSignals> }) {
+function ProfileIntelligence({ intelligence }: { intelligence: CareerIntelligence }) {
+  return (
+    <Card className="border-[var(--border)] bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.11),transparent_32%),rgba(11,16,24,0.86)] p-6">
+      <div className="flex flex-wrap items-start justify-between gap-5">
+        <div>
+          <p className="text-sm font-semibold uppercase text-[var(--muted)]">Resume intelligence</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-white">Profile optimization system</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--muted-strong)]">
+            MatchIQ scores profile readiness from parsed resume data, target roles, skill coverage, work-mode strategy, and market coverage.
+          </p>
+        </div>
+        <div className="min-w-[150px] rounded-[1.25rem] border border-[var(--border-glow)] bg-[var(--primary)]/10 p-4 text-center">
+          <p className="text-xs font-semibold uppercase text-[var(--muted)]">Readiness</p>
+          <p className="mt-2 font-display text-4xl font-semibold text-white">{intelligence.profileScore}%</p>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-5">
+        {intelligence.profileReadiness.map((item) => (
+          <div key={item.label} className="rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <span className="text-sm font-semibold text-white">{item.label}</span>
+              <span
+                className={cn(
+                  "grid size-6 place-items-center rounded-full text-xs font-semibold",
+                  item.complete ? "bg-[var(--success)]/12 text-[var(--success)]" : "bg-[var(--warning)]/12 text-[var(--warning)]"
+                )}
+              >
+                {item.complete ? <CheckCircle2 className="size-3.5" /> : <Clock3 className="size-3.5" />}
+              </span>
+            </div>
+            <p className="text-xs leading-5 text-[var(--muted-strong)]">{item.detail}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 grid gap-4 md:grid-cols-3">
+        {intelligence.recommendations.map((recommendation) => (
+          <div key={recommendation.title} className="rounded-[1rem] border border-[var(--border)] bg-black/14 p-4">
+            <Badge variant={recommendation.impact === "High" ? "warning" : "discovery"}>{recommendation.impact} impact</Badge>
+            <h3 className="mt-3 font-semibold text-white">{recommendation.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-[var(--muted-strong)]">{recommendation.detail}</p>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+function ActivityFeed({ data, jobs, skills }: { data: DashboardData; jobs: DashboardJob[]; skills: SkillSignals }) {
   const latestJob = jobs[0];
   const items = [
     {

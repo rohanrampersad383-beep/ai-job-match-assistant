@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { BrainCircuit } from "lucide-react";
 
 import { hideJobAction, markReviewedAction, saveJobAction } from "@/lib/actions/jobs";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { SubmitButton } from "@/components/ui/submit-button";
+import { explainJobMatch } from "@/lib/intelligence/career";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import type { ScoreReason } from "@/types";
 
@@ -33,8 +35,12 @@ export function JobCard({
     postedAt: Date | null;
     discoveredAt: Date | null;
     description: string;
+    requiredSkills: string[];
+    preferredSkills: string[];
     sourceName: string;
     applicationUrl: string;
+    seniorityLevel?: string | null;
+    isRemoteFriendly: boolean;
     isDiscoveredAutomatically: boolean;
     needsReview: boolean;
     isTrinidadAndTobago: boolean;
@@ -44,6 +50,8 @@ export function JobCard({
       category: string;
       applyWorthIt: string;
       reasons: unknown;
+      matchedSkills: string[];
+      missingSkills: string[];
       reviewedAt: Date | null;
     }>;
     savedBy: Array<unknown>;
@@ -54,6 +62,7 @@ export function JobCard({
 }) {
   const match = job.matches[0];
   const reasons = Array.isArray(match?.reasons) ? (match.reasons as ScoreReason[]) : [];
+  const explanation = explainJobMatch(job);
   const salaryLabel =
     job.salaryMin || job.salaryMax
       ? `${formatCurrency(job.salaryMin, job.salaryCurrency ?? "USD")} - ${formatCurrency(job.salaryMax, job.salaryCurrency ?? "USD")}`
@@ -94,6 +103,9 @@ export function JobCard({
 
       <div className="mt-5 flex flex-wrap gap-2">
         <Badge variant={matchVariant(match?.category)}>{match?.category?.replaceAll("_", " ") ?? "Awaiting score"}</Badge>
+        {explanation.confidence.badges.slice(0, 3).map((badge) => (
+          <Badge key={badge} variant={badge === "Skill Gap" ? "warning" : "discovery"}>{badge}</Badge>
+        ))}
         {job.savedBy.length ? <Badge variant="warning">Saved</Badge> : null}
         {job.applications.length ? <Badge variant="success">{job.applications[0].status}</Badge> : null}
         <Badge variant="neutral">{salaryLabel}</Badge>
@@ -104,6 +116,35 @@ export function JobCard({
         {job.description.slice(0, 240)}
         {job.description.length > 240 ? "..." : ""}
       </p>
+
+      <div className="mt-5 rounded-[1.15rem] border border-[var(--border-glow)] bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.12),transparent_30%),rgba(47,107,255,0.08)] p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-sm font-semibold text-white">
+            <span className="grid size-8 place-items-center rounded-[var(--radius-md)] bg-[var(--accent-cyan)]/10 text-[var(--accent-cyan)]">
+              <BrainCircuit className="size-4" />
+            </span>
+            AI match explanation
+          </div>
+          <Badge variant="discovery">{explanation.confidence.tier}</Badge>
+        </div>
+        <p className="mt-3 text-sm leading-6 text-[var(--muted-strong)]">{explanation.summary}</p>
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase text-[var(--muted)]">Strongest signals</p>
+            <ul className="space-y-2 text-sm text-[var(--muted-strong)]">
+              {explanation.strongestAlignment.slice(0, 2).map((signal) => (
+                <li key={signal} className="rounded-[var(--radius-md)] bg-[var(--success)]/8 px-3 py-2 text-[var(--success)]">
+                  {signal}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase text-[var(--muted)]">Next best action</p>
+            <p className="rounded-[var(--radius-md)] bg-black/16 px-3 py-2 text-sm leading-6 text-[var(--secondary)]">{explanation.nextStep}</p>
+          </div>
+        </div>
+      </div>
 
       {reasons.length ? (
         <div className="mt-5 grid gap-2 lg:grid-cols-2">
