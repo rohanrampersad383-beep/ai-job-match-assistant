@@ -114,7 +114,16 @@ export async function getDashboardData(userId: string, filters: DashboardFilters
     where: { id: userId },
     include: {
       preferences: true,
-      scoringSettings: true
+      scoringSettings: true,
+      resumes: {
+        take: 1,
+        orderBy: {
+          createdAt: "desc"
+        },
+        include: {
+          extractedData: true
+        }
+      }
     }
   });
 
@@ -138,7 +147,18 @@ export async function getDashboardData(userId: string, filters: DashboardFilters
     }
   };
 
-  const [jobs, total, stats, sources, newJobsCount, trinidadJobsCount, remoteJobsCount, highMatchJobsCount, needsReviewCount] = await Promise.all([
+  const [
+    jobs,
+    total,
+    stats,
+    sources,
+    applicationStatusCounts,
+    newJobsCount,
+    trinidadJobsCount,
+    remoteJobsCount,
+    highMatchJobsCount,
+    needsReviewCount
+  ] = await Promise.all([
     prisma.job.findMany({
       where,
       orderBy: [
@@ -211,6 +231,13 @@ export async function getDashboardData(userId: string, filters: DashboardFilters
         name: true
       }
     }),
+    prisma.application.groupBy({
+      by: ["status"],
+      where: { userId },
+      _count: {
+        _all: true
+      }
+    }),
     prisma.job.count({
       where: {
         ...baseVisibleWhere,
@@ -261,6 +288,7 @@ export async function getDashboardData(userId: string, filters: DashboardFilters
     totalPages: Math.max(Math.ceil(total / PAGE_SIZE), 1),
     stats,
     sources,
+    applicationStatusCounts,
     summary: {
       newJobs: newJobsCount,
       trinidadJobs: trinidadJobsCount,
