@@ -11,6 +11,7 @@ import {
   History,
   LayoutDashboard,
   ListChecks,
+  LogOut,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
@@ -20,7 +21,7 @@ import {
   UserRound,
   X,
 } from "lucide-react";
-import { PropsWithChildren, useMemo, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useRef, useState } from "react";
 
 import { MatchIQLogo } from "@/components/branding/matchiq-logo";
 import { CommandPalette } from "@/components/layout/command-palette";
@@ -147,8 +148,46 @@ export function AppShell({
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
+  const [activeTopbarMenu, setActiveTopbarMenu] = useState<"notifications" | "profile" | null>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const firstNotificationActionRef = useRef<HTMLAnchorElement>(null);
+  const firstProfileActionRef = useRef<HTMLAnchorElement>(null);
   const pageLabel = resolvePageLabel(pathname);
   const initials = useMemo(() => getInitials(userName), [userName]);
+
+  useEffect(() => {
+    if (!activeTopbarMenu) {
+      return;
+    }
+
+    const activeRef = activeTopbarMenu === "notifications" ? notificationsRef : profileRef;
+
+    function onPointerDown(event: PointerEvent) {
+      if (!activeRef.current?.contains(event.target as Node)) {
+        setActiveTopbarMenu(null);
+      }
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setActiveTopbarMenu(null);
+      }
+    }
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+
+    const focusTarget =
+      activeTopbarMenu === "notifications" ? firstNotificationActionRef.current : firstProfileActionRef.current;
+    const focusTimer = window.setTimeout(() => focusTarget?.focus(), 0);
+
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+      window.clearTimeout(focusTimer);
+    };
+  }, [activeTopbarMenu]);
 
   return (
     <div className={cn("app-shell-grid min-h-screen", collapsed && "app-shell-grid-collapsed")}>
@@ -221,7 +260,7 @@ export function AppShell({
       ) : null}
 
       <main className="min-w-0">
-        <div className="motion-ambient-surface sticky top-0 z-[var(--z-sticky)] overflow-hidden border-b border-[var(--border)] bg-[rgba(7,10,17,0.72)] px-4 py-3 backdrop-blur-2xl lg:px-6">
+        <div className="sticky top-0 z-[var(--z-sticky)] border-b border-[var(--border)] bg-[rgba(7,10,17,0.72)] px-4 py-3 backdrop-blur-2xl lg:px-6">
           <div className="app-topbar">
             <div className="flex min-w-0 items-center gap-3">
               <button className="motion-press rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-muted)] p-2 text-[var(--muted)] transition hover:text-white lg:hidden" aria-label="Open navigation" onClick={() => setMobileOpen(true)}>
@@ -240,34 +279,111 @@ export function AppShell({
             </button>
 
             <div className="flex items-center gap-2">
-              <button className="motion-press grid size-11 place-items-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-white" aria-label="Notifications">
-                <Bell className="size-4" />
-              </button>
-              <details className="group relative">
-                <summary className="motion-press flex list-none items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] p-1.5 pr-2 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--border-strong)]">
-                  <span className="grid size-8 place-items-center rounded-[var(--radius-md)] bg-[image:var(--gradient-brand)] text-xs text-white">{initials}</span>
-                  <ChevronDownIcon />
-                </summary>
-                <div className="absolute right-0 mt-2 w-64 overflow-hidden rounded-[1rem] border border-[var(--border)] bg-[rgba(8,11,17,0.96)] p-2 shadow-[var(--shadow-strong)]">
-                  <div className="px-3 py-3">
-                    <p className="font-semibold text-[var(--foreground-strong)]">{userName}</p>
-                    <p className="mt-1 text-xs text-[var(--muted)]">Career intelligence workspace</p>
+              <div ref={notificationsRef} className="relative">
+                <button
+                  aria-expanded={activeTopbarMenu === "notifications"}
+                  aria-haspopup="dialog"
+                  aria-label="Notifications"
+                  className="motion-press grid size-11 place-items-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                  onClick={() =>
+                    setActiveTopbarMenu((current) => (current === "notifications" ? null : "notifications"))
+                  }
+                  type="button"
+                >
+                  <Bell className="size-4" />
+                </button>
+                {activeTopbarMenu === "notifications" ? (
+                  <div
+                    className="fixed right-4 top-[4.75rem] z-[calc(var(--z-modal)+10)] w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-[1.15rem] border border-[var(--border-glow)] bg-[rgba(8,11,18,0.98)] p-2 shadow-[0_24px_80px_rgba(0,0,0,0.48),var(--shadow-glow)] backdrop-blur-2xl lg:right-6"
+                    role="dialog"
+                    aria-label="Notifications"
+                  >
+                    <div className="border-b border-[var(--border)] px-3 py-3">
+                      <p className="text-sm font-semibold text-[var(--foreground-strong)]">Notifications</p>
+                      <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                        No urgent alerts right now. Discovery and review signals will appear here.
+                      </p>
+                    </div>
+                    <div className="grid gap-2 p-2">
+                      <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] p-3">
+                        <p className="text-sm font-semibold text-[var(--foreground)]">All clear</p>
+                        <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
+                          MatchIQ will surface source failures, high-confidence roles, and application reminders in this panel.
+                        </p>
+                      </div>
+                      <Link
+                        ref={firstNotificationActionRef}
+                        className="flex items-center justify-between rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--muted-strong)] transition hover:bg-[var(--surface-muted)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                        href="/review-queue"
+                        onClick={() => setActiveTopbarMenu(null)}
+                      >
+                        Review opportunity queue
+                        <ChevronRight className="size-4" />
+                      </Link>
+                      <Link
+                        className="flex items-center justify-between rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--muted-strong)] transition hover:bg-[var(--surface-muted)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                        href="/discovery-runs"
+                        onClick={() => setActiveTopbarMenu(null)}
+                      >
+                        View discovery health
+                        <ChevronRight className="size-4" />
+                      </Link>
+                    </div>
                   </div>
-                  <Link className="flex items-center gap-2 rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--muted-strong)] transition hover:bg-[var(--surface-muted)] hover:text-white" href="/profile">
-                    <UserRound className="size-4" />
-                    Profile
-                  </Link>
-                  <Link className="flex items-center gap-2 rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--muted-strong)] transition hover:bg-[var(--surface-muted)] hover:text-white" href="/settings">
-                    <Settings className="size-4" />
-                    Settings
-                  </Link>
-                  <form action={signOutAction} className="mt-2 border-t border-[var(--border)] pt-2">
-                    <Button className="w-full justify-start" size="sm" variant="ghost" type="submit">
-                      Sign out
-                    </Button>
-                  </form>
-                </div>
-              </details>
+                ) : null}
+              </div>
+
+              <div ref={profileRef} className="relative">
+                <button
+                  aria-expanded={activeTopbarMenu === "profile"}
+                  aria-haspopup="menu"
+                  className="motion-press flex items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] p-1.5 pr-2 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                  onClick={() => setActiveTopbarMenu((current) => (current === "profile" ? null : "profile"))}
+                  type="button"
+                >
+                  <span className="grid size-8 place-items-center rounded-[var(--radius-md)] bg-[image:var(--gradient-brand)] text-xs text-white">{initials}</span>
+                  <span className={cn("grid size-6 place-items-center rounded-[var(--radius-sm)] text-[var(--muted)] transition", activeTopbarMenu === "profile" && "rotate-90")}>
+                    <ChevronRight className="size-4" />
+                  </span>
+                </button>
+                {activeTopbarMenu === "profile" ? (
+                  <div
+                    className="fixed right-4 top-[4.75rem] z-[calc(var(--z-modal)+10)] w-[min(18rem,calc(100vw-2rem))] overflow-hidden rounded-[1.15rem] border border-[var(--border-glow)] bg-[rgba(8,11,18,0.98)] p-2 shadow-[0_24px_80px_rgba(0,0,0,0.48),var(--shadow-glow)] backdrop-blur-2xl lg:right-6"
+                    role="menu"
+                    aria-label="Account menu"
+                  >
+                    <div className="px-3 py-3">
+                      <p className="font-semibold text-[var(--foreground-strong)]">{userName}</p>
+                      <p className="mt-1 text-xs leading-5 text-[var(--muted)]">Current MatchIQ career intelligence workspace</p>
+                    </div>
+                    <Link
+                      ref={firstProfileActionRef}
+                      className="flex items-center gap-2 rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--muted-strong)] transition hover:bg-[var(--surface-muted)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                      href="/profile"
+                      onClick={() => setActiveTopbarMenu(null)}
+                      role="menuitem"
+                    >
+                      <UserRound className="size-4" />
+                      View profile
+                    </Link>
+                    <Link
+                      className="flex items-center gap-2 rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--muted-strong)] transition hover:bg-[var(--surface-muted)] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
+                      href="/settings"
+                      onClick={() => setActiveTopbarMenu(null)}
+                      role="menuitem"
+                    >
+                      <Settings className="size-4" />
+                      Settings
+                    </Link>
+                    <form action={signOutAction} className="mt-2 border-t border-[var(--border)] pt-2">
+                      <Button className="w-full justify-start gap-2" size="sm" variant="ghost" type="submit">
+                        <LogOut className="size-4" />
+                        Sign out
+                      </Button>
+                    </form>
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
@@ -277,13 +393,5 @@ export function AppShell({
         </div>
       </main>
     </div>
-  );
-}
-
-function ChevronDownIcon() {
-  return (
-    <span className="grid size-6 place-items-center rounded-[var(--radius-sm)] text-[var(--muted)] transition group-open:rotate-90">
-      <ChevronRight className="size-4" />
-    </span>
   );
 }

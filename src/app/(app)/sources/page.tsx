@@ -28,6 +28,21 @@ function healthVariant(status: string) {
   }
 }
 
+function qualityBadges(source: { defaultTags: string[]; regionTags: string[]; enabled: boolean; healthStatus: string }) {
+  const tags = new Set([...source.defaultTags, ...source.regionTags]);
+  const badges = [];
+
+  if (tags.has("high-quality")) badges.push({ label: "High Quality", variant: "success" as const });
+  if (tags.has("remote-friendly")) badges.push({ label: "Remote Friendly", variant: "discovery" as const });
+  if (tags.has("startup-source")) badges.push({ label: "Startup Source", variant: "info" as const });
+  if (tags.has("trinidad-and-tobago") || tags.has("caribbean")) badges.push({ label: "Regional Source", variant: "success" as const });
+  if (!source.enabled || tags.has("needs-review") || source.healthStatus === "UNKNOWN") {
+    badges.push({ label: "Needs Review", variant: "warning" as const });
+  }
+
+  return badges;
+}
+
 export default async function SourcesPage() {
   const sources = await getSourcesData();
 
@@ -73,12 +88,13 @@ export default async function SourcesPage() {
           const lastRun = source.runs[0];
 
           return (
-            <Card key={source.id} className="bg-[var(--surface)]">
+            <Card key={source.id} className="motion-signal-surface bg-[var(--surface)]">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <CardTitle>{source.name}</CardTitle>
                     <Badge variant="info">{source.sourceType}</Badge>
+                    <Badge variant="discovery">{source.fetchStrategy}</Badge>
                   </div>
                   <CardDescription className="mt-2 break-all">
                     {source.baseUrl}
@@ -93,26 +109,44 @@ export default async function SourcesPage() {
                 </div>
               </div>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-4">
-                <div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {qualityBadges(source).map((badge) => (
+                  <Badge key={`${source.id}-${badge.label}`} variant={badge.variant}>
+                    {badge.label}
+                  </Badge>
+                ))}
+              </div>
+
+              <div className="mt-6 grid gap-3 md:grid-cols-4">
+                <div className="rounded-[1.15rem] border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3">
                   <p className="text-xs uppercase text-[var(--muted)]">Last run</p>
                   <p className="mt-1 text-sm text-[var(--secondary)]">{formatDate(source.lastRunAt)}</p>
                 </div>
-                <div>
+                <div className="rounded-[1.15rem] border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3">
                   <p className="text-xs uppercase text-[var(--muted)]">Last success</p>
                   <p className="mt-1 text-sm text-[var(--secondary)]">{formatDate(source.lastSuccessAt)}</p>
                 </div>
-                <div>
+                <div className="rounded-[1.15rem] border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3">
                   <p className="text-xs uppercase text-[var(--muted)]">Normalized jobs</p>
                   <p className="mt-1 text-sm text-[var(--secondary)]">{source._count.normalizedJobs}</p>
                 </div>
-                <div>
+                <div className="rounded-[1.15rem] border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-3">
                   <p className="text-xs uppercase text-[var(--muted)]">Recorded errors</p>
                   <p className="mt-1 text-sm text-[var(--secondary)]">{source._count.errors}</p>
                 </div>
               </div>
 
-              <p className="mt-6 text-sm leading-7 text-[var(--secondary)]">{source.legalNotes}</p>
+              <div className="mt-6 grid gap-3 lg:grid-cols-[1fr_0.85fr]">
+                <p className="rounded-[1.15rem] border border-[var(--border)] bg-[rgba(255,255,255,0.025)] px-4 py-4 text-sm leading-7 text-[var(--secondary)]">
+                  {source.legalNotes}
+                </p>
+                <div className="rounded-[1.15rem] border border-[var(--border)] bg-[var(--surface-muted)] px-4 py-4">
+                  <p className="text-xs uppercase text-[var(--muted)]">Latest source signal</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--secondary)]">
+                    {source.lastMessage ?? "No run history yet. Use the manual run action to validate this adapter."}
+                  </p>
+                </div>
+              </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
                 {source.defaultTags.map((tag) => (

@@ -34,29 +34,55 @@ function mapDiscoverySourceTypeToJobSourceType(type: DiscoverySourceType) {
 
 function extractPossibleSkills(text: string) {
   const candidates = [
-    "php",
-    "laravel",
-    "mysql",
-    "postgres",
-    "javascript",
-    "typescript",
-    "react",
-    "node",
-    "aws",
-    "docker",
+    "ai",
+    "agentic",
+    "analytics",
     "api",
-    "sql",
-    "python",
-    "git",
+    "aws",
+    "azure",
+    "cloud",
     "customer service",
+    "data",
+    "docker",
+    "fastapi",
+    "finance",
+    "figma",
+    "gcp",
+    "git",
+    "graphql",
+    "javascript",
+    "kubernetes",
+    "laravel",
+    "llm",
+    "machine learning",
+    "mysql",
+    "next.js",
+    "node",
+    "postgres",
+    "postgresql",
+    "php",
+    "prisma",
+    "product management",
     "project management",
-    "accounting",
-    "finance"
+    "python",
+    "react",
+    "redis",
+    "rest",
+    "saas",
+    "sql",
+    "supabase",
+    "tailwind",
+    "terraform",
+    "typescript",
+    "ux"
   ];
   const normalized = normalizeText(text);
   return uniqueArray(
     candidates
-      .filter((candidate) => normalized.includes(candidate))
+      .filter((candidate) => {
+        const escaped = candidate.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i").test(normalized);
+      })
       .map((candidate) =>
         candidate
           .split(" ")
@@ -64,6 +90,16 @@ function extractPossibleSkills(text: string) {
           .join(" ")
       )
   );
+}
+
+function jobTagCategory(tag: string) {
+  const normalized = tag.toLowerCase();
+
+  if (normalized.includes("trinidad") || normalized.includes("caribbean")) return "region";
+  if (normalized.includes("remote")) return "work-mode";
+  if (["high-quality", "startup-source", "needs-review", "regional-source"].includes(normalized)) return "quality";
+
+  return "source";
 }
 
 function inferEducationRequirements(text: string) {
@@ -207,7 +243,11 @@ async function materializeCanonicalJob(params: {
     rawPayload: {
       sourceType: params.normalized.sourceType,
       sourceName: params.normalized.sourceName,
-      sourceUrl: params.normalized.sourceUrl
+      sourceUrl: params.normalized.sourceUrl,
+      applicationUrl: params.normalized.applicationUrl,
+      externalId: params.normalized.externalId,
+      normalizedHash: params.normalized.normalizedHash,
+      tags: params.normalized.tags
     }
   };
 
@@ -232,7 +272,7 @@ async function materializeCanonicalJob(params: {
         jobId: job.id,
         sourceId: params.source.id,
         label: tag,
-        category: tag.includes("trinidad") || tag.includes("caribbean") ? "region" : "source"
+        category: jobTagCategory(tag)
       }))
     });
   }
@@ -355,11 +395,11 @@ async function processNormalizedItem(params: {
     if (params.normalized.tags.length) {
       await tx.jobTag.createMany({
         data: params.normalized.tags.map((tag) => ({
-          discoveredJobId: discoveryRecord.id,
-          sourceId: params.source.id,
-          label: tag,
-          category: tag.includes("trinidad") || tag.includes("caribbean") ? "region" : "source"
-        }))
+            discoveredJobId: discoveryRecord.id,
+            sourceId: params.source.id,
+            label: tag,
+            category: jobTagCategory(tag)
+          }))
       });
     }
 

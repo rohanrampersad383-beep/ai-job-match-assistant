@@ -1,9 +1,15 @@
 import { apiDiscoveryAdapter } from "@/lib/discovery/sources/api";
 import { htmlDiscoveryAdapter } from "@/lib/discovery/sources/html";
 import { rssDiscoveryAdapter } from "@/lib/discovery/sources/rss";
+import { structuredJobBoardAdapter } from "@/lib/discovery/sources/structured";
 import type { DiscoverySourceAdapter, DiscoverySourceRecord } from "@/lib/discovery/types";
 
-const adapters: DiscoverySourceAdapter[] = [rssDiscoveryAdapter, apiDiscoveryAdapter, htmlDiscoveryAdapter];
+const adapters: DiscoverySourceAdapter[] = [
+  structuredJobBoardAdapter,
+  rssDiscoveryAdapter,
+  apiDiscoveryAdapter,
+  htmlDiscoveryAdapter
+];
 
 export function resolveDiscoveryAdapter(source: DiscoverySourceRecord) {
   const adapter = adapters.find((candidate) => candidate.canHandle(source));

@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/db/prisma";
+import { syncRecommendedDiscoverySources } from "@/lib/discovery/default-sources";
 
 export async function getSourcesData() {
+  await syncRecommendedDiscoverySources();
+
   return prisma.discoverySource.findMany({
     orderBy: {
       name: "asc"

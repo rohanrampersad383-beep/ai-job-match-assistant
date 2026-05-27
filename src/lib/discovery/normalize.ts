@@ -82,11 +82,26 @@ function extractSalaryParts(value?: string) {
   const raw = decodeAndSanitize(value);
   const numbers: number[] = [];
 
-  for (const salaryMatch of raw.matchAll(/(\d[\d,]{2,})/g)) {
-    numbers.push(Number.parseInt(salaryMatch[1].replaceAll(",", ""), 10));
+  for (const salaryMatch of raw.matchAll(/(\d[\d,]*(?:\.\d+)?)\s*(k|m)?/gi)) {
+    const amount = Number.parseFloat(salaryMatch[1].replaceAll(",", ""));
+    const multiplier = salaryMatch[2]?.toLowerCase() === "m" ? 1_000_000 : salaryMatch[2]?.toLowerCase() === "k" ? 1_000 : 1;
+
+    if (amount >= 1) {
+      numbers.push(Math.round(amount * multiplier));
+    }
   }
 
-  const currency = /tt\$|ttd/i.test(raw) ? "TTD" : /\$|usd/i.test(raw) ? "USD" : undefined;
+  const currency = /tt\$|ttd/i.test(raw)
+    ? "TTD"
+    : /€|eur/i.test(raw)
+      ? "EUR"
+      : /£|gbp/i.test(raw)
+        ? "GBP"
+        : /cad/i.test(raw)
+          ? "CAD"
+          : /\$|usd/i.test(raw)
+            ? "USD"
+            : undefined;
 
   return {
     salaryRaw: raw,
@@ -94,6 +109,30 @@ function extractSalaryParts(value?: string) {
     salaryMax: numbers[1] ?? numbers[0],
     currency
   };
+}
+
+function normalizeUrlForDedupe(value?: string) {
+  if (!value) {
+    return undefined;
+  }
+
+  try {
+    const url = new URL(value);
+    const keptParams = new URLSearchParams();
+
+    for (const [key, paramValue] of url.searchParams) {
+      if (!key.toLowerCase().startsWith("utm_")) {
+        keptParams.set(key, paramValue);
+      }
+    }
+
+    url.hash = "";
+    url.search = keptParams.toString();
+
+    return url.toString().replace(/\/$/, "").toLowerCase();
+  } catch {
+    return value.replace(/[?#].*$/, "").replace(/\/$/, "").toLowerCase();
+  }
 }
 
 function extractRequirements(description: string, hintedRequirements?: string) {
@@ -122,12 +161,15 @@ function buildDedupeKey({
   title: string;
   locationSlug: string;
 }) {
-  if (applicationUrl) {
-    return `application:${applicationUrl.toLowerCase()}`;
+  const normalizedApplicationUrl = normalizeUrlForDedupe(applicationUrl);
+  const normalizedSourceUrl = normalizeUrlForDedupe(sourceUrl);
+
+  if (normalizedApplicationUrl) {
+    return `application:${normalizedApplicationUrl}`;
   }
 
-  if (sourceUrl) {
-    return `source:${sourceUrl.toLowerCase()}`;
+  if (normalizedSourceUrl) {
+    return `source:${normalizedSourceUrl}`;
   }
 
   return `canonical:${slugify(company)}:${slugify(title)}:${locationSlug}`;
