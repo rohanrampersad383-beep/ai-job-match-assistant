@@ -102,9 +102,9 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-[var(--z-modal)] bg-black/58 p-4 backdrop-blur-xl" role="dialog" aria-modal="true" aria-label="MatchIQ command center">
+    <div className="motion-modal-backdrop fixed inset-0 z-[var(--z-modal)] bg-black/58 p-4 backdrop-blur-xl" role="dialog" aria-modal="true" aria-label="MatchIQ command center">
       <button className="absolute inset-0 cursor-default" aria-label="Close command center" onClick={closePalette} />
-      <div className="motion-reveal-up relative mx-auto mt-[10vh] max-w-2xl overflow-hidden rounded-[1.5rem] border border-[var(--border-glow)] bg-[rgba(8,11,17,0.96)] shadow-[var(--shadow-strong)]">
+      <div className="motion-command-panel motion-signal-surface relative mx-auto mt-[10vh] max-w-2xl overflow-hidden rounded-[1.5rem] border border-[var(--border-glow)] bg-[rgba(8,11,17,0.96)] shadow-[var(--shadow-strong)]">
         <div className="flex items-center gap-3 border-b border-[var(--border)] px-4 py-3">
           <Search className="size-5 text-[var(--accent-cyan)]" />
           <input
@@ -153,7 +153,7 @@ export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
                   <button
                     key={item.href}
                     className={cn(
-                      "flex w-full items-center gap-3 rounded-[var(--radius-lg)] border px-3 py-3 text-left transition",
+                      "motion-command-item flex w-full items-center gap-3 rounded-[var(--radius-lg)] border px-3 py-3 text-left transition",
                       index === activeIndex
                         ? "border-[var(--border-glow)] bg-[image:var(--gradient-active)] text-white shadow-[var(--shadow-glow)]"
                         : "border-transparent text-[var(--muted-strong)] hover:border-[var(--border)] hover:bg-[var(--surface-muted)] hover:text-white"

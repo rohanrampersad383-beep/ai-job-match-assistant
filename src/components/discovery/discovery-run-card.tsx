@@ -52,7 +52,7 @@ export function DiscoveryRunCard({
   const StatusIcon = statusIcon;
 
   return (
-    <Card className="interactive-card bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.1),transparent_28%),var(--surface)] p-5">
+    <Card className="interactive-card motion-signal-surface bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.1),transparent_28%),var(--surface)] p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="mb-3 flex flex-wrap gap-2">
@@ -78,7 +78,7 @@ export function DiscoveryRunCard({
             Import health
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-white/8">
-            <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${importedRate}%` }} />
+          <div className="motion-progress-fill h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${importedRate}%` }} />
           </div>
           <p className="mt-2 text-sm text-[var(--secondary)]">{importedRate}% of found jobs imported</p>
         </div>

@@ -64,7 +64,7 @@ export function ReviewQueueCard({
       : "Salary not listed";
 
   return (
-    <Card className="interactive-card motion-glow-hover bg-[radial-gradient(circle_at_100%_0%,rgba(47,107,255,0.11),transparent_30%),var(--surface)] p-5">
+    <Card className="interactive-card motion-glow-hover motion-signal-surface bg-[radial-gradient(circle_at_100%_0%,rgba(47,107,255,0.11),transparent_30%),var(--surface)] p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1 space-y-2">
           <div className="flex flex-wrap gap-2">
@@ -90,7 +90,7 @@ export function ReviewQueueCard({
             {job.location} | {job.workMode ? titleCase(job.workMode) : "Work mode not specified"} | Discovered {formatDate(job.discoveredAt)}
           </CardDescription>
         </div>
-        <div className="min-w-[126px] rounded-[1.35rem] bg-[image:var(--gradient-brand)] px-4 py-4 text-right text-[var(--primary-foreground)] shadow-[var(--shadow-glow)]">
+        <div className="motion-score-ring min-w-[126px] rounded-[1.35rem] bg-[image:var(--gradient-brand)] px-4 py-4 text-right text-[var(--primary-foreground)] shadow-[var(--shadow-glow)]">
           <p className="text-xs uppercase">Match</p>
           <p className="mt-2 text-4xl font-semibold ">{match?.matchPercent ?? 0}%</p>
           <p className="mt-1 text-xs text-white/72">{explanation.confidence.tier}</p>
@@ -125,7 +125,7 @@ export function ReviewQueueCard({
               Confidence
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-white/8">
-              <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${explanation.confidence.overall}%` }} />
+              <div className="motion-progress-fill h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${explanation.confidence.overall}%` }} />
             </div>
             <p className="mt-2 text-sm text-[var(--secondary)]">{explanation.confidence.overall}% overall confidence</p>
           </div>
@@ -170,7 +170,7 @@ export function ReviewQueueCard({
           </SubmitButton>
         </form>
         <a
-          className="inline-flex items-center justify-center gap-2 rounded-[1rem] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-semibold text-[var(--secondary)] transition hover:border-[var(--border-glow)] hover:text-white"
+          className="motion-press inline-flex items-center justify-center gap-2 rounded-[1rem] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-semibold text-[var(--secondary)] transition hover:border-[var(--border-glow)] hover:text-white"
           href={job.applicationUrl}
           rel="noreferrer"
           target="_blank"

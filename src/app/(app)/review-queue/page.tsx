@@ -105,12 +105,12 @@ export default async function ReviewQueuePage({
   return (
     <div className="space-y-6">
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <Card className="relative overflow-hidden border-[var(--border-glow)] bg-[radial-gradient(circle_at_86%_12%,rgba(139,92,246,0.2),transparent_30%),radial-gradient(circle_at_16%_10%,rgba(34,211,238,0.12),transparent_28%),rgba(10,15,24,0.9)] p-6 md:p-8">
+        <Card className="motion-ambient-surface relative overflow-hidden border-[var(--border-glow)] bg-[radial-gradient(circle_at_86%_12%,rgba(139,92,246,0.2),transparent_30%),radial-gradient(circle_at_16%_10%,rgba(34,211,238,0.12),transparent_28%),rgba(10,15,24,0.9)] p-6 md:p-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-muted)] px-3 py-1.5 text-xs font-semibold uppercase text-[var(--accent-cyan)]">
             <BrainCircuit className="size-4" />
             AI review queue
           </div>
-          <h1 className="mt-5 max-w-3xl font-display text-4xl font-semibold leading-tight text-white md:text-5xl">
+          <h1 className="mt-5 max-w-3xl font-display text-3xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl">
             Triage high-signal opportunities with confidence.
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-[var(--muted-strong)]">
@@ -123,7 +123,7 @@ export default async function ReviewQueuePage({
               pendingLabel="Running discovery..."
             />
             <Link
-              className="inline-flex min-h-11 items-center justify-center rounded-[var(--radius-control)] border border-white/18 bg-white/8 px-4.5 py-2.5 text-sm font-semibold text-white transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
+              className="motion-press inline-flex min-h-11 items-center justify-center rounded-[var(--radius-control)] border border-white/18 bg-white/8 px-4.5 py-2.5 text-sm font-semibold text-white transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
               href="/sources"
             >
               Sources
@@ -131,7 +131,7 @@ export default async function ReviewQueuePage({
           </div>
         </Card>
 
-        <Card className="grid gap-4 bg-[rgba(11,16,24,0.86)] p-5">
+        <Card className="motion-depth-strong grid gap-4 bg-[rgba(11,16,24,0.86)] p-5">
           {[
             { label: "Queued", value: queue.length, icon: Clock3, tone: "text-[var(--accent-cyan)]" },
             { label: "High confidence", value: highConfidenceCount, icon: CheckCircle2, tone: "text-[var(--success)]" },
@@ -140,7 +140,7 @@ export default async function ReviewQueuePage({
           ].map((item) => {
             const Icon = item.icon;
             return (
-              <div key={item.label} className="flex items-center justify-between rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+              <div key={item.label} className="interactive-card flex items-center justify-between rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
                 <div>
                   <p className="text-xs font-semibold uppercase text-[var(--muted)]">{item.label}</p>
                   <p className="mt-1 font-display text-3xl font-semibold text-white">{item.value}</p>
@@ -170,7 +170,7 @@ export default async function ReviewQueuePage({
       />
 
       {jobs.length ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3">
+        <div className="motion-signal-surface flex flex-wrap items-center justify-between gap-3 overflow-hidden rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface)] px-4 py-3">
           <div className="flex flex-wrap gap-2">
             <Badge variant="discovery">{jobs.length} visible</Badge>
             {highConfidenceOnly ? <Badge variant="success">High confidence</Badge> : null}
@@ -197,7 +197,7 @@ export default async function ReviewQueuePage({
           title={queue.length ? "No jobs match the current review filters" : "No jobs currently need review"}
         >
           <Link
-            className="inline-flex min-h-11 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2.5 text-sm font-semibold text-[var(--foreground)] hover:border-[var(--border-glow)]"
+            className="motion-press inline-flex min-h-11 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2.5 text-sm font-semibold text-[var(--foreground)] hover:border-[var(--border-glow)]"
             href="/review-queue"
           >
             Reset filters

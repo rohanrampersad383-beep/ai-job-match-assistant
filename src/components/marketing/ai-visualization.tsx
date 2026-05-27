@@ -36,7 +36,7 @@ const signalNodes = [
 
 export function AIVisualization({ className }: { className?: string }) {
   return (
-    <div className={cn("relative min-h-[560px] overflow-hidden rounded-[var(--radius-panel)]", className)}>
+    <div className={cn("motion-ambient-surface relative min-h-[560px] overflow-hidden rounded-[var(--radius-panel)]", className)}>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(47,107,255,0.28),transparent_32%),radial-gradient(circle_at_64%_58%,rgba(139,92,246,0.22),transparent_28%),linear-gradient(180deg,rgba(16,23,34,0.9),rgba(8,11,17,0.95))]" />
       <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] [background-size:44px_44px]" />
 
@@ -67,7 +67,7 @@ export function AIVisualization({ className }: { className?: string }) {
                 <p className="text-sm text-[var(--muted)]">Career intelligence score</p>
                 <p className="mt-1 font-display text-6xl font-semibold text-[var(--foreground-strong)]">92</p>
               </div>
-              <div className="relative size-28 shrink-0 rounded-full border border-[var(--border-glow)] bg-[conic-gradient(from_90deg,#22d3ee_0deg,#2f6bff_210deg,rgba(255,255,255,0.08)_211deg)] p-2 shadow-[var(--shadow-glow)]">
+              <div className="motion-score-ring relative size-28 shrink-0 rounded-full border border-[var(--border-glow)] bg-[conic-gradient(from_90deg,#22d3ee_0deg,#2f6bff_210deg,rgba(255,255,255,0.08)_211deg)] p-2 shadow-[var(--shadow-glow)]">
                 <div className="grid size-full place-items-center rounded-full bg-[var(--background-elevated)]">
                   <Target className="size-8 text-[var(--accent-cyan)]" />
                 </div>
@@ -88,7 +88,7 @@ export function AIVisualization({ className }: { className?: string }) {
               <div key={node.label} className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[rgba(16,23,34,0.72)] p-3">
                 <p className="text-xs uppercase text-[var(--muted)]">{node.label}</p>
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--surface-muted)]">
-                  <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: node.label === "Salary" ? "68%" : "86%" }} />
+                  <div className="motion-progress-fill h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: node.label === "Salary" ? "68%" : "86%" }} />
                 </div>
               </div>
             ))}
@@ -106,8 +106,8 @@ export function AIVisualization({ className }: { className?: string }) {
             </div>
           ))}
 
-          <div className="absolute left-1/2 top-1/2 hidden size-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--border)] bg-[rgba(8,11,17,0.82)] shadow-[var(--shadow-strong)] sm:grid sm:place-items-center">
-            <div className="grid size-24 place-items-center rounded-[2rem] bg-[image:var(--gradient-brand)] shadow-[var(--shadow-glow)]">
+          <div className="motion-score-ring absolute left-1/2 top-1/2 hidden size-40 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--border)] bg-[rgba(8,11,17,0.82)] shadow-[var(--shadow-strong)] sm:grid sm:place-items-center">
+            <div className="motion-sheen grid size-24 place-items-center overflow-hidden rounded-[2rem] bg-[image:var(--gradient-brand)] shadow-[var(--shadow-glow)]">
               <Sparkles className="size-9 text-white" />
             </div>
           </div>
@@ -117,7 +117,7 @@ export function AIVisualization({ className }: { className?: string }) {
               <div
                 key={item.role}
                 className={cn(
-                  "landing-float-card rounded-[1.25rem] border border-[var(--border)] bg-[rgba(11,16,24,0.9)] p-4 shadow-[var(--shadow-soft)] backdrop-blur-xl",
+                  "landing-float-card motion-depth rounded-[1.25rem] border border-[var(--border)] bg-[rgba(11,16,24,0.9)] p-4 shadow-[var(--shadow-soft)] backdrop-blur-xl",
                   index === 1 && "mr-8",
                   index === 2 && "ml-5"
                 )}

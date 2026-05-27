@@ -33,7 +33,7 @@ export default async function JobDetailPage({
 
   return (
     <div className="space-y-6">
-      <Card className="relative overflow-hidden border-[var(--border-glow)] bg-[radial-gradient(circle_at_85%_10%,rgba(139,92,246,0.2),transparent_30%),radial-gradient(circle_at_12%_8%,rgba(34,211,238,0.12),transparent_28%),rgba(10,15,24,0.9)] p-6 md:p-8">
+      <Card className="motion-ambient-surface relative overflow-hidden border-[var(--border-glow)] bg-[radial-gradient(circle_at_85%_10%,rgba(139,92,246,0.2),transparent_30%),radial-gradient(circle_at_12%_8%,rgba(34,211,238,0.12),transparent_28%),rgba(10,15,24,0.9)] p-6 md:p-8">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
           <div className="min-w-0">
             <div className="mb-4 flex flex-wrap gap-2">
@@ -42,14 +42,14 @@ export default async function JobDetailPage({
                 <Badge key={badge} variant={badge === "Skill Gap" ? "warning" : "info"}>{badge}</Badge>
               ))}
             </div>
-            <h1 className="font-display text-4xl font-semibold leading-tight text-white md:text-5xl">{job.title}</h1>
+            <h1 className="font-display text-3xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl">{job.title}</h1>
             <p className="mt-3 text-lg font-semibold text-[var(--muted-strong)]">{job.company}</p>
             <p className="mt-3 max-w-3xl text-base leading-7 text-[var(--muted-strong)]">
               {explanation.summary}
             </p>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row xl:flex-col">
-            <div className="min-w-[170px] rounded-[1.5rem] bg-[image:var(--gradient-brand)] px-5 py-5 text-center text-white shadow-[var(--shadow-glow)]">
+            <div className="motion-score-ring min-w-[170px] rounded-[1.5rem] bg-[image:var(--gradient-brand)] px-5 py-5 text-center text-white shadow-[var(--shadow-glow)]">
               <p className="text-xs font-semibold uppercase text-white/78">Match score</p>
               <p className="mt-2 font-display text-5xl font-semibold">{match?.matchPercent ?? 0}%</p>
               <p className="mt-1 text-xs text-white/72">{explanation.confidence.overall}% confidence</p>
@@ -60,7 +60,7 @@ export default async function JobDetailPage({
       </Card>
 
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card className="bg-[var(--surface)]">
+        <Card className="motion-depth-strong bg-[var(--surface)]">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <CardTitle>{job.title}</CardTitle>
@@ -104,7 +104,7 @@ export default async function JobDetailPage({
         </Card>
 
         <div className="grid gap-6">
-          <Card className="bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.1),transparent_30%),var(--surface)]">
+          <Card className="motion-signal-surface bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.1),transparent_30%),var(--surface)]">
             <div className="flex items-center gap-2">
               <BrainCircuit className="size-5 text-[var(--accent-cyan)]" />
               <CardTitle>AI fit explanation</CardTitle>
@@ -140,7 +140,7 @@ export default async function JobDetailPage({
             </div>
           </Card>
 
-          <Card className="bg-[var(--surface)]">
+          <Card className="motion-depth-strong bg-[var(--surface)]">
             <div className="flex items-center gap-2">
               <TrendingUp className="size-5 text-[var(--accent-cyan)]" />
               <CardTitle>Confidence dimensions</CardTitle>
@@ -153,7 +153,7 @@ export default async function JobDetailPage({
                     <span className="text-[var(--foreground)]">{dimension.value}%</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-white/8">
-                    <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${dimension.value}%` }} />
+                    <div className="motion-progress-fill h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${dimension.value}%` }} />
                   </div>
                   <p className="mt-2 text-xs leading-5 text-[var(--muted)]">{dimension.rationale}</p>
                 </div>
@@ -165,14 +165,14 @@ export default async function JobDetailPage({
         </div>
       </div>
 
-      <Card className="bg-[var(--surface)]">
+      <Card className="motion-signal-surface bg-[var(--surface)]">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <CardTitle>Suggested resume keywords</CardTitle>
             <CardDescription className="mt-2">Use these only if they truthfully reflect your experience or portfolio evidence.</CardDescription>
           </div>
           <a
-            className="inline-flex items-center gap-2 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-semibold text-[var(--secondary)] transition hover:border-[var(--border-glow)] hover:text-white"
+            className="motion-press inline-flex items-center gap-2 rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-4 py-2 text-sm font-semibold text-[var(--secondary)] transition hover:border-[var(--border-glow)] hover:text-white"
             href={job.applicationUrl}
             rel="noreferrer"
             target="_blank"

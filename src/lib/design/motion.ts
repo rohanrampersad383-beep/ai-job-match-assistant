@@ -2,6 +2,7 @@ export const motionTimings = {
   fast: 0.16,
   base: 0.22,
   slow: 0.42,
+  cinematic: 0.72,
   stagger: 0.055
 } as const;
 
@@ -17,6 +18,15 @@ export const cssMotion = {
   stagger: "motion-stagger",
   hoverLift: "motion-hover-lift",
   glowHover: "motion-glow-hover",
+  depth: "motion-depth",
+  depthStrong: "motion-depth-strong",
+  signalSurface: "motion-signal-surface",
+  ambientSurface: "motion-ambient-surface",
+  press: "motion-press",
+  progressFill: "motion-progress-fill",
+  barFill: "motion-bar-fill",
+  scoreRing: "motion-score-ring",
+  commandPanel: "motion-command-panel",
   float: "motion-float",
   shimmer: "motion-shimmer"
 } as const;

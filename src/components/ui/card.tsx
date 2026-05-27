@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 import { cn } from "@/lib/utils";
 
 export function Card({ children, className }: PropsWithChildren<{ className?: string }>) {
-  return <div className={cn("glass-panel rounded-[var(--radius-card)] p-6", className)}>{children}</div>;
+  return <div className={cn("glass-panel motion-depth rounded-[var(--radius-card)] p-6", className)}>{children}</div>;
 }
 
 export function CardTitle({ children, className }: PropsWithChildren<{ className?: string }>) {

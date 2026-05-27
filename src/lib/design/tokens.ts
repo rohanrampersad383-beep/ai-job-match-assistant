@@ -57,12 +57,15 @@ export const designTokens = {
   shadows: {
     soft: "0 18px 44px rgba(0, 0, 0, 0.24)",
     strong: "0 32px 88px rgba(0, 0, 0, 0.42)",
-    glow: "0 0 42px rgba(47, 107, 255, 0.24)"
+    glow: "0 0 42px rgba(47, 107, 255, 0.24)",
+    depth: "0 22px 58px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(255, 255, 255, 0.035)",
+    aura: "0 0 28px rgba(34, 211, 238, 0.12), 0 0 60px rgba(47, 107, 255, 0.14)"
   },
   motion: {
     fast: "160ms",
     base: "220ms",
     slow: "420ms",
+    cinematic: "720ms",
     ease: "cubic-bezier(0.22, 1, 0.36, 1)",
     soft: "cubic-bezier(0.16, 1, 0.3, 1)"
   },

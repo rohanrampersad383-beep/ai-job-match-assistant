@@ -183,7 +183,7 @@ export default async function DashboardPage({
   return (
     <div className="motion-stagger space-y-6">
       <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(390px,0.85fr)]">
-        <Card className="relative min-h-[360px] overflow-hidden border-[var(--border-glow)] bg-[radial-gradient(circle_at_82%_8%,rgba(139,92,246,0.22),transparent_32%),radial-gradient(circle_at_18%_18%,rgba(34,211,238,0.13),transparent_30%),rgba(10,15,24,0.9)] p-6 md:p-8">
+        <Card className="motion-ambient-surface relative min-h-[360px] overflow-hidden border-[var(--border-glow)] bg-[radial-gradient(circle_at_82%_8%,rgba(139,92,246,0.22),transparent_32%),radial-gradient(circle_at_18%_18%,rgba(34,211,238,0.13),transparent_30%),rgba(10,15,24,0.9)] p-6 md:p-8">
           <div className="absolute right-8 top-8 hidden size-44 rounded-full border border-[var(--primary)]/20 bg-[var(--primary)]/8 blur-2xl md:block" />
           <div className="relative z-10 grid h-full gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
             <div className="flex min-w-0 flex-col justify-between">
@@ -222,7 +222,7 @@ export default async function DashboardPage({
             <div className="relative flex min-h-[240px] items-center justify-center">
               <div className="absolute inset-3 rounded-full border border-[var(--primary)]/14" />
               <div className="absolute inset-10 rounded-full border border-[var(--accent)]/20" />
-              <div className="motion-float relative grid size-48 place-items-center rounded-full border border-[var(--border-glow)] bg-[radial-gradient(circle_at_50%_30%,rgba(34,211,238,0.22),rgba(47,107,255,0.16)_42%,rgba(8,11,17,0.92)_72%)] shadow-[var(--shadow-glow)]">
+              <div className="motion-float motion-score-ring relative grid size-48 place-items-center rounded-full border border-[var(--border-glow)] bg-[radial-gradient(circle_at_50%_30%,rgba(34,211,238,0.22),rgba(47,107,255,0.16)_42%,rgba(8,11,17,0.92)_72%)] shadow-[var(--shadow-glow)]">
                 <Sparkles className="absolute left-7 top-8 size-5 text-[var(--accent-cyan)]" />
                 <p className="text-center">
                   <span className="block text-xs font-semibold uppercase text-[var(--muted)]">Best fit</span>
@@ -335,7 +335,7 @@ function StatsOverview({ data }: { data: DashboardData }) {
       {items.map((item) => {
         const Icon = item.icon;
         return (
-          <Card key={item.label} className="interactive-card relative overflow-hidden border-[var(--border)] bg-[rgba(13,19,30,0.82)] p-5">
+          <Card key={item.label} className="interactive-card motion-signal-surface relative overflow-hidden border-[var(--border)] bg-[rgba(13,19,30,0.82)] p-5">
             <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,transparent,var(--accent-cyan),var(--primary),transparent)] opacity-60" />
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -367,7 +367,7 @@ function MatchScoreModule({
   const radarValues = scoreValues.breakdown.map((item) => item.value);
 
   return (
-    <Card className="relative overflow-hidden border-[var(--border)] bg-[rgba(11,16,24,0.9)] p-6">
+    <Card className="motion-signal-surface relative overflow-hidden border-[var(--border)] bg-[rgba(11,16,24,0.9)] p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-semibold uppercase text-[var(--muted)]">Match score system</p>
@@ -380,7 +380,7 @@ function MatchScoreModule({
       <div className="mt-6 grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
         <div className="grid place-items-center">
           <div
-            className="relative grid size-44 place-items-center rounded-full"
+            className="motion-score-ring relative grid size-44 place-items-center rounded-full"
             style={ringStyle}
           >
             <div className="absolute inset-0 rounded-full bg-[conic-gradient(var(--accent-cyan)_0deg,var(--primary)_var(--match-score-angle),rgba(255,255,255,0.08)_var(--match-score-angle),rgba(255,255,255,0.08)_360deg)]" />
@@ -413,7 +413,7 @@ function MatchScoreModule({
                   <span className="text-[var(--foreground)]">{item.value}%</span>
                 </div>
                 <div className="h-2 overflow-hidden rounded-full bg-white/8">
-                  <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${item.value}%` }} />
+                  <div className="motion-progress-fill h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${item.value}%` }} />
                 </div>
               </div>
             ))}
@@ -426,7 +426,7 @@ function MatchScoreModule({
 
 function TopMatches({ jobs }: { jobs: DashboardJob[] }) {
   return (
-    <Card className="border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-5 md:p-6">
+    <Card className="motion-depth-strong border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-5 md:p-6">
       <div className="mb-5 flex items-center justify-between gap-4">
         <div>
           <p className="text-sm font-semibold uppercase text-[var(--muted)]">Top matches</p>
@@ -444,7 +444,7 @@ function TopMatches({ jobs }: { jobs: DashboardJob[] }) {
             const explanation = explainJobMatch(job);
             const reason = explanation.strongestAlignment[0] ?? explanation.summary;
             return (
-              <article key={job.id} className="interactive-card rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+              <article key={job.id} className="interactive-card motion-sheen rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div className="min-w-0">
                     <div className="mb-2 flex flex-wrap gap-2">
@@ -509,7 +509,7 @@ function AIInsightPanel({
   ];
 
   return (
-    <Card className="relative overflow-hidden border-[var(--border-glow)] bg-[radial-gradient(circle_at_100%_0%,rgba(139,92,246,0.22),transparent_34%),rgba(13,19,30,0.86)] p-6">
+    <Card className="motion-signal-surface relative overflow-hidden border-[var(--border-glow)] bg-[radial-gradient(circle_at_100%_0%,rgba(139,92,246,0.22),transparent_34%),rgba(13,19,30,0.86)] p-6">
       <div className="absolute right-5 top-5 grid size-14 place-items-center rounded-full border border-[var(--accent-cyan)]/24 bg-[var(--accent-cyan)]/10 text-[var(--accent-cyan)] shadow-[var(--shadow-cyan)]">
         <BrainCircuit className="size-6" />
       </div>
@@ -521,12 +521,12 @@ function AIInsightPanel({
           <span className="text-[var(--accent-cyan)]">{intelligence.profileScore}%</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-white/8">
-          <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${intelligence.profileScore}%` }} />
+          <div className="motion-progress-fill h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${intelligence.profileScore}%` }} />
         </div>
       </div>
       <div className="mt-6 grid gap-3">
         {insights.map((insight, index) => (
-          <div key={insight} className="rounded-[1rem] border border-[var(--border)] bg-black/16 p-4">
+          <div key={insight} className="interactive-card rounded-[1rem] border border-[var(--border)] bg-black/16 p-4">
             <div className="flex gap-3">
               <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-[var(--primary)]/14 text-xs font-semibold text-[var(--accent-cyan)]">
                 {index + 1}
@@ -548,7 +548,7 @@ function PipelinePanel({
   const max = Math.max(...pipeline.map((stage) => stage.value), 1);
 
   return (
-    <Card className="border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-6">
+    <Card className="motion-depth-strong border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-semibold uppercase text-[var(--muted)]">Opportunity pipeline</p>
@@ -562,7 +562,7 @@ function PipelinePanel({
           const Icon = stage.icon;
           const width = Math.max((stage.value / max) * 100, stage.value > 0 ? 12 : 4);
           return (
-            <div key={stage.label} className="rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+            <div key={stage.label} className="interactive-card rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
               <div className="mb-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <span className={cn("grid size-9 place-items-center rounded-[var(--radius-md)] bg-white/6", stage.tone)}>
@@ -573,7 +573,7 @@ function PipelinePanel({
                 <span className="font-display text-2xl font-semibold text-white">{stage.value}</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-white/8">
-                <div className="h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${width}%` }} />
+                <div className="motion-progress-fill h-full rounded-full bg-[image:var(--gradient-brand)]" style={{ width: `${width}%` }} />
               </div>
             </div>
           );
@@ -585,7 +585,7 @@ function PipelinePanel({
 
 function SkillIntelligence({ skills }: { skills: SkillSignals }) {
   return (
-    <Card className="border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-6">
+    <Card className="motion-depth-strong border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-semibold uppercase text-[var(--muted)]">Skill gap intelligence</p>
@@ -621,7 +621,7 @@ function SkillColumn({
   }[tone];
 
   return (
-    <div className="rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+    <div className="interactive-card rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
       <div className="mb-4 flex items-center gap-3">
         <span className={cn("grid size-9 place-items-center rounded-[var(--radius-md)]", toneClass)}>
           <Icon className="size-4" />
@@ -641,7 +641,7 @@ function SkillColumn({
 
 function ProfileIntelligence({ intelligence }: { intelligence: CareerIntelligence }) {
   return (
-    <Card className="border-[var(--border)] bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.11),transparent_32%),rgba(11,16,24,0.86)] p-6">
+    <Card className="motion-signal-surface border-[var(--border)] bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.11),transparent_32%),rgba(11,16,24,0.86)] p-6">
       <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
           <p className="text-sm font-semibold uppercase text-[var(--muted)]">Resume intelligence</p>
@@ -658,7 +658,7 @@ function ProfileIntelligence({ intelligence }: { intelligence: CareerIntelligenc
 
       <div className="mt-6 grid gap-4 lg:grid-cols-5">
         {intelligence.profileReadiness.map((item) => (
-          <div key={item.label} className="rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+          <div key={item.label} className="interactive-card rounded-[1rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <span className="text-sm font-semibold text-white">{item.label}</span>
               <span
@@ -677,7 +677,7 @@ function ProfileIntelligence({ intelligence }: { intelligence: CareerIntelligenc
 
       <div className="mt-5 grid gap-4 md:grid-cols-3">
         {intelligence.recommendations.map((recommendation) => (
-          <div key={recommendation.title} className="rounded-[1rem] border border-[var(--border)] bg-black/14 p-4">
+          <div key={recommendation.title} className="interactive-card rounded-[1rem] border border-[var(--border)] bg-black/14 p-4">
             <Badge variant={recommendation.impact === "High" ? "warning" : "discovery"}>{recommendation.impact} impact</Badge>
             <h3 className="mt-3 font-semibold text-white">{recommendation.title}</h3>
             <p className="mt-2 text-sm leading-6 text-[var(--muted-strong)]">{recommendation.detail}</p>
@@ -712,13 +712,13 @@ function ActivityFeed({ data, jobs, skills }: { data: DashboardData; jobs: Dashb
   ];
 
   return (
-    <Card className="border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-6">
+    <Card className="motion-depth-strong border-[var(--border)] bg-[rgba(11,16,24,0.86)] p-6">
       <p className="text-sm font-semibold uppercase text-[var(--muted)]">Recommendation feed</p>
       <div className="mt-5 grid gap-4">
         {items.map((item) => {
           const Icon = item.icon;
           return (
-            <div key={item.title} className="flex gap-3">
+            <div key={item.title} className="interactive-card flex gap-3 rounded-[1rem] border border-transparent p-2">
               <span className="grid size-9 shrink-0 place-items-center rounded-[var(--radius-md)] bg-[var(--primary)]/12 text-[var(--accent-cyan)]">
                 <Icon className="size-4" />
               </span>

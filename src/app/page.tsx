@@ -99,7 +99,7 @@ const trustItems = [
 export default function HomePage() {
   return (
     <main className="overflow-hidden">
-      <header className="sticky top-0 z-[var(--z-sticky)] border-b border-[var(--border)] bg-[rgba(7,10,17,0.72)] backdrop-blur-2xl">
+      <header className="motion-ambient-surface sticky top-0 z-[var(--z-sticky)] overflow-hidden border-b border-[var(--border)] bg-[rgba(7,10,17,0.72)] backdrop-blur-2xl">
         <div className="container-shell flex min-h-20 items-center justify-between gap-6">
           <Link href="/" aria-label={`${brand.name} home`}>
             <MatchIQLogo markClassName="size-8 sm:size-10" textClassName="text-lg sm:text-xl" />
@@ -116,7 +116,7 @@ export default function HomePage() {
               Sign in
             </Link>
             <Link
-              className="inline-flex min-h-10 items-center justify-center rounded-[var(--radius-control)] border border-[var(--primary)] bg-[image:var(--gradient-brand)] px-3.5 py-2 text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-glow)] transition hover:border-[var(--accent-cyan)]"
+              className="motion-press motion-sheen inline-flex min-h-10 items-center justify-center overflow-hidden rounded-[var(--radius-control)] border border-[var(--primary)] bg-[image:var(--gradient-brand)] px-3.5 py-2 text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-glow)] transition hover:border-[var(--accent-cyan)]"
               href="/sign-up"
             >
               Start
@@ -138,13 +138,13 @@ export default function HomePage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[var(--radius-control)] border border-[var(--primary)] bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-glow)] transition hover:border-[var(--accent-cyan)]"
+                className="motion-press motion-sheen inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-control)] border border-[var(--primary)] bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-glow)] transition hover:border-[var(--accent-cyan)]"
                 href="/sign-up"
               >
                 Start Matching Smarter <ArrowRight className="size-4" />
               </Link>
               <a
-                className="inline-flex min-h-12 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-6 py-3 text-sm font-semibold text-[var(--foreground)] shadow-sm transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
+                className="motion-press inline-flex min-h-12 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-6 py-3 text-sm font-semibold text-[var(--foreground)] shadow-sm transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
                 href="#preview"
               >
                 View Intelligence Demo
@@ -156,7 +156,7 @@ export default function HomePage() {
                 ["4x", "Faster shortlist"],
                 ["0", "Auto-apply spam"]
               ].map(([value, label]) => (
-                <div key={label} className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
+                <div key={label} className="motion-depth rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] p-4">
                   <p className="font-display text-3xl font-semibold text-[var(--foreground-strong)]">{value}</p>
                   <p className="mt-1 text-xs uppercase text-[var(--muted)]">{label}</p>
                 </div>
@@ -164,7 +164,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <AIVisualization className="shadow-[var(--shadow-strong)]" />
+          <AIVisualization className="motion-depth-strong shadow-[var(--shadow-strong)]" />
         </div>
       </section>
 
@@ -185,7 +185,7 @@ export default function HomePage() {
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
-              <Card key={feature.title} className="interactive-card motion-glow-hover h-full p-5">
+              <Card key={feature.title} className="interactive-card motion-glow-hover motion-signal-surface h-full p-5">
                 <div className="grid size-11 place-items-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--primary)]/12 text-[var(--primary-soft)]">
                   <Icon className="size-5" />
                 </div>
@@ -198,7 +198,7 @@ export default function HomePage() {
       </section>
 
       <section id="workflow" className="section-container">
-        <div className="rounded-[var(--radius-panel)] border border-[var(--border)] bg-[linear-gradient(180deg,rgba(16,23,34,0.72),rgba(8,11,17,0.88))] p-6 shadow-[var(--shadow-soft)] md:p-8">
+        <div className="motion-ambient-surface overflow-hidden rounded-[var(--radius-panel)] border border-[var(--border)] bg-[linear-gradient(180deg,rgba(16,23,34,0.72),rgba(8,11,17,0.88))] p-6 shadow-[var(--shadow-soft)] md:p-8">
           <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
               <Badge variant="discovery">How it works</Badge>
@@ -215,7 +215,7 @@ export default function HomePage() {
             {workflow.map((step, index) => {
               const Icon = step.icon;
               return (
-                <div key={step.title} className="relative rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface)] p-5">
+                <div key={step.title} className="interactive-card motion-depth relative overflow-hidden rounded-[1.25rem] border border-[var(--border)] bg-[var(--surface)] p-5">
                   <div className="flex items-center justify-between gap-4">
                     <div className="grid size-11 place-items-center rounded-[var(--radius-lg)] bg-[image:var(--gradient-brand)] text-white">
                       <Icon className="size-5" />
@@ -259,7 +259,7 @@ export default function HomePage() {
           </div>
           <div className="grid gap-3">
             {trustItems.map((item) => (
-              <div key={item} className="flex items-center gap-3 rounded-[1.15rem] border border-[var(--border)] bg-[var(--surface)] p-4">
+              <div key={item} className="interactive-card motion-depth flex items-center gap-3 rounded-[1.15rem] border border-[var(--border)] bg-[var(--surface)] p-4">
                 <CheckCircle2 className="size-5 shrink-0 text-[var(--success)]" />
                 <span className="font-medium text-[var(--foreground)]">{item}</span>
               </div>
@@ -269,7 +269,7 @@ export default function HomePage() {
       </section>
 
       <section className="section-container pt-0">
-        <div className="relative overflow-hidden rounded-[var(--radius-panel)] border border-[var(--border-glow)] bg-[radial-gradient(circle_at_50%_0%,rgba(47,107,255,0.26),transparent_36%),linear-gradient(180deg,rgba(16,23,34,0.92),rgba(8,11,17,0.96))] p-8 text-center shadow-[var(--shadow-strong)] md:p-14">
+        <div className="motion-ambient-surface motion-depth-strong relative overflow-hidden rounded-[var(--radius-panel)] border border-[var(--border-glow)] bg-[radial-gradient(circle_at_50%_0%,rgba(47,107,255,0.26),transparent_36%),linear-gradient(180deg,rgba(16,23,34,0.92),rgba(8,11,17,0.96))] p-8 text-center shadow-[var(--shadow-strong)] md:p-14">
           <div className="mx-auto grid size-16 place-items-center rounded-[1.25rem] bg-[image:var(--gradient-brand)] text-white shadow-[var(--shadow-glow)]">
             <Zap className="size-7" />
           </div>
@@ -281,13 +281,13 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[var(--radius-control)] border border-[var(--primary)] bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-glow)] transition hover:border-[var(--accent-cyan)]"
+              className="motion-press motion-sheen inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-[var(--radius-control)] border border-[var(--primary)] bg-[image:var(--gradient-brand)] px-6 py-3 text-sm font-semibold text-[var(--primary-foreground)] shadow-[var(--shadow-glow)] transition hover:border-[var(--accent-cyan)]"
               href="/sign-up"
             >
               Explore MatchIQ <ArrowRight className="size-4" />
             </Link>
             <Link
-              className="inline-flex min-h-12 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-6 py-3 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
+              className="motion-press inline-flex min-h-12 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface-raised)] px-6 py-3 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
               href="/sign-in"
             >
               Sign in

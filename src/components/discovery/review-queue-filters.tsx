@@ -35,7 +35,7 @@ export function ReviewQueueFilters({
   ];
 
   return (
-    <Card className="bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.1),transparent_30%),var(--surface)] p-5 md:p-6">
+    <Card className="motion-signal-surface bg-[radial-gradient(circle_at_100%_0%,rgba(34,211,238,0.1),transparent_30%),var(--surface)] p-5 md:p-6">
       <form className="grid gap-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -52,7 +52,7 @@ export function ReviewQueueFilters({
               Apply filters
             </SubmitButton>
             <Link
-              className="inline-flex min-h-10 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2 text-sm font-semibold text-[var(--secondary)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]"
+              className="motion-press inline-flex min-h-10 items-center justify-center rounded-[var(--radius-control)] border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2 text-sm font-semibold text-[var(--secondary)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-raised)]"
               href="/review-queue"
             >
               Reset
@@ -97,7 +97,7 @@ export function ReviewQueueFilters({
               <label
                 key={chip.name}
                 className={cn(
-                  "inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-semibold uppercase text-[var(--secondary)] transition hover:border-[var(--border-glow)] hover:text-white",
+                  "motion-press inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-semibold uppercase text-[var(--secondary)] transition hover:border-[var(--border-glow)] hover:text-white",
                   chip.checked ? `${chip.tone} text-white` : "border-[var(--border)] bg-[var(--surface-muted)]"
                 )}
               >

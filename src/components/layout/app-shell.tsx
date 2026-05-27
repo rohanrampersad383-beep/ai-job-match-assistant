@@ -103,7 +103,7 @@ function SidebarNavigation({
                   title={collapsed ? item.label : undefined}
                   onClick={onNavigate}
                   className={cn(
-                    "group relative flex items-center gap-3 rounded-[var(--radius-lg)] border px-3 py-3 text-sm font-medium transition",
+                    "motion-sheen group relative flex items-center gap-3 overflow-hidden rounded-[var(--radius-lg)] border px-3 py-3 text-sm font-medium transition",
                     collapsed && "justify-center px-2",
                     active
                       ? "border-[var(--border-glow)] bg-[image:var(--gradient-active)] text-white shadow-[var(--shadow-glow)]"
@@ -160,7 +160,7 @@ export function AppShell({
             <MatchIQLogo showText={!collapsed} markClassName={collapsed ? "size-9" : undefined} />
           </Link>
           <button
-            className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-muted)] p-2 text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-white"
+          className="motion-press rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-muted)] p-2 text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-white"
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
             onClick={() => setCollapsed((value) => !value)}
           >
@@ -170,7 +170,7 @@ export function AppShell({
 
         <button
           className={cn(
-            "mt-5 flex min-h-11 items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] px-3 text-left text-sm text-[var(--muted)] transition hover:border-[var(--border-glow)] hover:text-white",
+            "motion-sheen mt-5 flex min-h-11 items-center gap-3 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] px-3 text-left text-sm text-[var(--muted)] transition hover:border-[var(--border-glow)] hover:text-white",
             collapsed && "justify-center px-2"
           )}
           onClick={() => setCommandOpen(true)}
@@ -186,7 +186,7 @@ export function AppShell({
 
         <SidebarNavigation pathname={pathname} collapsed={collapsed} />
 
-        <div className={cn("mt-5 rounded-[1.2rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4", collapsed && "p-2")}>
+        <div className={cn("motion-signal-surface mt-5 overflow-hidden rounded-[1.2rem] border border-[var(--border)] bg-[var(--surface-muted)] p-4", collapsed && "p-2")}>
           {!collapsed ? (
             <>
               <div className="flex items-center gap-2 text-sm font-semibold text-[var(--foreground)]">
@@ -204,7 +204,7 @@ export function AppShell({
       {mobileOpen ? (
         <div className="fixed inset-0 z-[var(--z-overlay)] lg:hidden">
           <button className="absolute inset-0 bg-black/58 backdrop-blur-sm" aria-label="Close navigation" onClick={() => setMobileOpen(false)} />
-          <aside className="motion-reveal-up app-sidebar app-sidebar-drawer flex w-[min(88vw,330px)] rounded-none border-y-0 border-l-0">
+          <aside className="motion-command-panel app-sidebar app-sidebar-drawer flex w-[min(88vw,330px)] rounded-none border-y-0 border-l-0">
             <div className="flex items-center justify-between gap-3">
               <MatchIQLogo />
               <button className="rounded-[var(--radius-md)] p-2 text-[var(--muted)] hover:bg-[var(--surface-muted)] hover:text-white" aria-label="Close navigation" onClick={() => setMobileOpen(false)}>
@@ -221,10 +221,10 @@ export function AppShell({
       ) : null}
 
       <main className="min-w-0">
-        <div className="sticky top-0 z-[var(--z-sticky)] border-b border-[var(--border)] bg-[rgba(7,10,17,0.72)] px-4 py-3 backdrop-blur-2xl lg:px-6">
+        <div className="motion-ambient-surface sticky top-0 z-[var(--z-sticky)] overflow-hidden border-b border-[var(--border)] bg-[rgba(7,10,17,0.72)] px-4 py-3 backdrop-blur-2xl lg:px-6">
           <div className="app-topbar">
             <div className="flex min-w-0 items-center gap-3">
-              <button className="rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-muted)] p-2 text-[var(--muted)] transition hover:text-white lg:hidden" aria-label="Open navigation" onClick={() => setMobileOpen(true)}>
+              <button className="motion-press rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface-muted)] p-2 text-[var(--muted)] transition hover:text-white lg:hidden" aria-label="Open navigation" onClick={() => setMobileOpen(true)}>
                 <Menu className="size-5" />
               </button>
               <div className="min-w-0">
@@ -233,18 +233,18 @@ export function AppShell({
               </div>
             </div>
 
-            <button className="hidden min-h-11 min-w-[280px] flex-1 items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] px-4 text-left text-sm text-[var(--muted)] transition hover:border-[var(--border-glow)] hover:text-white md:flex xl:max-w-xl" onClick={() => setCommandOpen(true)}>
+            <button className="motion-sheen hidden min-h-11 min-w-[280px] flex-1 items-center gap-3 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] px-4 text-left text-sm text-[var(--muted)] transition hover:border-[var(--border-glow)] hover:text-white md:flex xl:max-w-xl" onClick={() => setCommandOpen(true)}>
               <Search className="size-4 text-[var(--accent-cyan)]" />
               <span className="flex-1">Search roles, sources, resumes, commands...</span>
               <kbd className="rounded-[var(--radius-sm)] border border-[var(--border)] px-2 py-1 font-mono text-[10px] text-[var(--muted)]">Ctrl K</kbd>
             </button>
 
             <div className="flex items-center gap-2">
-              <button className="grid size-11 place-items-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-white" aria-label="Notifications">
+              <button className="motion-press grid size-11 place-items-center rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:text-white" aria-label="Notifications">
                 <Bell className="size-4" />
               </button>
               <details className="group relative">
-                <summary className="flex list-none items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] p-1.5 pr-2 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--border-strong)]">
+                <summary className="motion-press flex list-none items-center gap-2 rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface-muted)] p-1.5 pr-2 text-sm font-semibold text-[var(--foreground)] transition hover:border-[var(--border-strong)]">
                   <span className="grid size-8 place-items-center rounded-[var(--radius-md)] bg-[image:var(--gradient-brand)] text-xs text-white">{initials}</span>
                   <ChevronDownIcon />
                 </summary>
