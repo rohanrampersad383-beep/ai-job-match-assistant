@@ -93,9 +93,9 @@ function extractSalaryParts(value?: string) {
 
   const currency = /tt\$|ttd/i.test(raw)
     ? "TTD"
-    : /€|eur/i.test(raw)
+    : /\u20ac|eur/i.test(raw)
       ? "EUR"
-      : /£|gbp/i.test(raw)
+      : /\u00a3|gbp/i.test(raw)
         ? "GBP"
         : /cad/i.test(raw)
           ? "CAD"
