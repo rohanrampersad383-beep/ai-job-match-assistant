@@ -131,6 +131,12 @@ export default async function ReviewQueuePage({
             >
               Sources
             </Link>
+            <Link
+              className="motion-press inline-flex min-h-11 items-center justify-center rounded-[var(--radius-control)] border border-white/18 bg-white/8 px-4.5 py-2.5 text-sm font-semibold text-white transition hover:border-[var(--border-strong)] hover:bg-[var(--surface-strong)]"
+              href="/discovered-jobs"
+            >
+              Discovered jobs
+            </Link>
           </div>
         </Card>
 

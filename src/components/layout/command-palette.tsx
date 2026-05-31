@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import {
   BriefcaseBusiness,
+  DatabaseZap,
   FileText,
   Globe,
   History,
@@ -21,6 +22,7 @@ import { cn } from "@/lib/utils";
 export const commandItems = [
   { href: "/dashboard", label: "Open Dashboard", description: "Review ranked opportunities", icon: LayoutDashboard },
   { href: "/review-queue", label: "Review Queue", description: "Triage high-signal matches", icon: ListChecks },
+  { href: "/discovered-jobs", label: "Discovered Jobs", description: "Scan imported source results", icon: DatabaseZap },
   { href: "/sources", label: "Manage Sources", description: "Tune discovery inputs", icon: Globe },
   { href: "/discovery-runs", label: "Inspect Discovery Runs", description: "View import health and logs", icon: History },
   { href: "/applications", label: "Track Applications", description: "Monitor manual application progress", icon: BriefcaseBusiness },
