@@ -237,7 +237,11 @@ export function explainJobMatch<TJob extends JobSignal>(job: TJob): MatchExplana
   const matchedSkills = match?.matchedSkills ?? [];
   const missingSkills = match?.missingSkills ?? [];
   const roleSkills = uniqueSignals([...job.requiredSkills, ...job.preferredSkills]);
-  const reasons = scoreReasons(match?.reasons).map((reason) => reason.label);
+  const scoredReasons = scoreReasons(match?.reasons);
+  const reasons = scoredReasons.map((reason) => reason.label);
+  const cautionReasons = scoredReasons
+    .filter((reason) => reason.tone === "warning" || /profile confidence/i.test(reason.label))
+    .map((reason) => reason.label);
   const workMode = job.workMode ? titleCase(job.workMode) : "unspecified";
 
   const strongestAlignment = uniqueSignals([
@@ -257,6 +261,7 @@ export function explainJobMatch<TJob extends JobSignal>(job: TJob): MatchExplana
 
   const watchouts = uniqueSignals([
     missingSkills.length ? `Potential gap: ${missingSkills.slice(0, 3).join(", ")}.` : null,
+    ...cautionReasons.slice(0, 2),
     !job.salaryMin && !job.salaryMax ? "Salary is not listed, so compensation fit needs manual review." : null,
     confidence.overall < 70 ? "Confidence is moderate; compare role scope before applying." : null
   ]).slice(0, 3);
