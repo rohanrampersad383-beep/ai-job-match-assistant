@@ -6,6 +6,7 @@ import {
   Bell,
   BriefcaseBusiness,
   ChevronRight,
+  DatabaseZap,
   FileText,
   Globe,
   History,
@@ -29,7 +30,7 @@ import { Button } from "@/components/ui/button";
 import { signOutAction } from "@/lib/actions/auth";
 import { cn } from "@/lib/utils";
 
-const navGroups = [
+export const navGroups = [
   {
     label: "Command",
     items: [
@@ -41,6 +42,7 @@ const navGroups = [
   {
     label: "Intelligence",
     items: [
+      { href: "/discovered-jobs", label: "Discovered Jobs", hint: "Source results", icon: DatabaseZap },
       { href: "/sources", label: "Sources", hint: "Discovery inputs", icon: Globe },
       { href: "/discovery-runs", label: "Discovery Runs", hint: "Import health", icon: History },
       { href: "/resume", label: "Resume", hint: "Profile signals", icon: FileText }

@@ -1,9 +1,15 @@
-import { PropsWithChildren } from "react";
+import { HTMLAttributes, PropsWithChildren } from "react";
 
 import { cn } from "@/lib/utils";
 
-export function Card({ children, className }: PropsWithChildren<{ className?: string }>) {
-  return <div className={cn("glass-panel motion-depth rounded-[var(--radius-card)] p-6", className)}>{children}</div>;
+type CardProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>>;
+
+export function Card({ children, className, ...props }: CardProps) {
+  return (
+    <div className={cn("glass-panel motion-depth rounded-[var(--radius-card)] p-6", className)} {...props}>
+      {children}
+    </div>
+  );
 }
 
 export function CardTitle({ children, className }: PropsWithChildren<{ className?: string }>) {
