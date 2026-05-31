@@ -30,7 +30,7 @@ import { Button } from "@/components/ui/button";
 import { signOutAction } from "@/lib/actions/auth";
 import { cn } from "@/lib/utils";
 
-const navGroups = [
+export const navGroups = [
   {
     label: "Command",
     items: [

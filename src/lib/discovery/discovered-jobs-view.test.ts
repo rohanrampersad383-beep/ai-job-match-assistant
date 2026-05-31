@@ -131,4 +131,20 @@ describe("discovered jobs view helpers", () => {
     assert.deepEqual(filterDiscoveredJobRows(rows, { needsReviewOnly: true }).map((item) => item.job.id), ["remote-high", "onsite-low"]);
     assert.deepEqual(filterDiscoveredJobRows(rows, { sourceId: "local" }).map((item) => item.job.id), ["onsite-low"]);
   });
+
+  test("returns a stable empty result for impossible filter combinations", () => {
+    const rows = [
+      row("remote-high", { match: 90, confidence: 92, tier: "High Confidence", sourceId: "remote", remote: true }),
+      row("onsite-low", { match: 72, confidence: 45, tier: "Needs Review", sourceId: "local", remote: false })
+    ];
+
+    assert.deepEqual(
+      filterDiscoveredJobRows(rows, {
+        confidence: "high",
+        remoteOnly: true,
+        sourceId: "local"
+      }),
+      []
+    );
+  });
 });
