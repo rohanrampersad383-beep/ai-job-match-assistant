@@ -316,4 +316,45 @@ describe("scoreJobForUser public calibration", () => {
     assert.ok(result.penalties.some((penalty) => /location|work mode|authorization/i.test(penalty)));
     assert.ok(result.missingSkills.length <= 2, "missing preferred skills should not dominate hard-blocked matches");
   });
+
+  test("does not give unrelated sparse profiles a fake medium score", () => {
+    const result = score(
+      { resumes: [] },
+      {
+        title: "Backend Platform Engineer",
+        requiredSkills: ["Go", "Kubernetes", "Distributed Systems"],
+        preferredSkills: ["GraphQL"],
+        requiredYearsExperience: 3,
+        seniorityLevel: SeniorityLevel.MID,
+        description: "Own backend platform services, Kubernetes operations, and distributed systems reliability."
+      },
+      {
+        desiredJobTitles: ["Graphic Designer"],
+        workModes: [WorkMode.REMOTE]
+      }
+    );
+
+    assert.ok(result.matchPercent < 50, `expected unrelated sparse profile to stay below medium, got ${result.matchPercent}`);
+    assert.ok(result.penalties.some((penalty) => /insufficient role evidence/i.test(penalty)));
+  });
+
+  test("does not treat short skill substrings as direct matches", () => {
+    const result = score(
+      {},
+      {
+        title: "Backend Go Engineer",
+        requiredSkills: ["Go"],
+        preferredSkills: [],
+        requiredYearsExperience: 1
+      },
+      {
+        desiredJobTitles: ["Backend Engineer"],
+        topSkills: ["Django"],
+        workModes: [WorkMode.REMOTE]
+      }
+    );
+
+    assert.ok(!result.matchedSkills.includes("Go"), "Django should not satisfy a Go requirement");
+    assert.ok(result.missingSkills.includes("Go"));
+  });
 });

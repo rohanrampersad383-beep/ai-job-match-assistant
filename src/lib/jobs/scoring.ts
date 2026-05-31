@@ -30,6 +30,7 @@ const RELATED_SKILL_GROUPS = [
   ["javascript", "typescript", "ecmascript"],
   ["react", "next.js", "nextjs", "frontend", "ui", "tailwind", "css"],
   ["node.js", "nodejs", "node", "express", "api", "api routes", "backend", "server actions"],
+  ["go", "golang"],
   ["sql", "postgresql", "postgres", "mysql", "prisma", "database", "database design"],
   ["dashboard", "dashboards", "analytics", "charts", "reporting", "data visualization"],
   ["ai", "llm", "agents", "automation", "machine learning", "workflow automation"],
@@ -150,12 +151,28 @@ function relatedGroupFor(skill: string) {
   return RELATED_SKILL_GROUPS.find((group) => group.some((item) => key.includes(skillKey(item)) || skillKey(item).includes(key)));
 }
 
+function isDirectSkillMatch(left: string, right: string) {
+  const leftKey = skillKey(left);
+  const rightKey = skillKey(right);
+
+  if (!leftKey || !rightKey) {
+    return false;
+  }
+
+  if (leftKey === rightKey) {
+    return true;
+  }
+
+  if (Math.min(leftKey.length, rightKey.length) <= 2) {
+    return false;
+  }
+
+  return leftKey.includes(rightKey) || rightKey.includes(leftKey);
+}
+
 function evaluateSkill(skill: string, profileSkills: string[], evidenceCorpus: string) {
   const key = skillKey(skill);
-  const direct = profileSkills.find((candidate) => {
-    const candidateKey = skillKey(candidate);
-    return candidateKey === key || candidateKey.includes(key) || key.includes(candidateKey);
-  });
+  const direct = profileSkills.find((candidate) => isDirectSkillMatch(candidate, skill));
 
   if (direct) {
     return { score: 1, match: skill, reason: "direct" as const };
@@ -163,7 +180,7 @@ function evaluateSkill(skill: string, profileSkills: string[], evidenceCorpus: s
 
   const group = relatedGroupFor(skill);
   const related = group
-    ? profileSkills.find((candidate) => group.some((item) => skillKey(candidate).includes(skillKey(item))))
+    ? profileSkills.find((candidate) => group.some((item) => isDirectSkillMatch(candidate, item)))
     : undefined;
 
   if (related) {
@@ -345,6 +362,16 @@ export function scoreJobForUser(
     reasons.push(buildReason(`Add skills, projects, or resume details to raise confidence for this role.`, "neutral"));
   } else if (jobSkills.length > 0) {
     reasons.push(buildReason(`This role relies on skills not visible in your profile yet.`, "warning"));
+  }
+
+  if (sparseProfile && desiredTitles.length > 0 && titleRatio < 0.4 && skillFit.requiredScore <= 0.55) {
+    penalties.push(`Insufficient role evidence for sparse profile`);
+    reasons.push(
+      buildReason(
+        `Available profile data does not yet show enough title or required-skill evidence for this role.`,
+        "warning"
+      )
+    );
   }
 
   if (skillFit.relatedMatches.some((match) => /project evidence|resume evidence/i.test(match))) {
